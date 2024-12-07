@@ -10,23 +10,30 @@ import random
 
 from PyQt6 import QtCore
 
-from Bots.AB import King, Pawn, Knight, Rock, Bishop, Queen
+from Bots.AB import Board
 #   Be careful with modules to import from the root (don't forget the Bots.)
 from Bots.ChessBotList import register_chess_bot
 
 #   Simply move the pawns forward and tries to capture as soon as possible
 
 
-piece_list = [King(), Pawn(), Knight(), Rock(), Bishop(), Queen()]
+chess_board = Board()
 def chess_bot(player_sequence, board, time_budget, **kwargs):
 
     print(board)
     color = player_sequence[1]
     print(f"Color: {color}")
     moves = []
+
+    board_value = chess_board.get_current_value(board, color)
+    print(f"Board value: {board_value}")
+
+    possible_boards = chess_board.get_possible_boards(board, color)
+    print(f"Possible boards: {possible_boards}")
+
     for y in range(board.shape[0]):
         for x in range(board.shape[1]):
-            for piece in piece_list:
+            for piece in chess_board.piece_dictionary.values():
                 if board[y,x] == piece.piece_name + color:
                     for move in piece.get_possible_moves(board, x, y, color):
                         moves.append(move)

@@ -1,5 +1,6 @@
 from pickle import GLOBAL
 from typing import override
+from dataclasses import dataclass
 
 #
 #   Example function to be implemented for
@@ -13,7 +14,13 @@ from PyQt6 import QtCore
 
 #   Be careful with modules to import from the root (don't forget the Bots.)
 from Bots.ChessBotList import register_chess_bot
+
 our_player_sequence = "w"
+
+@dataclass
+class Move:
+    start: tuple[int, int]
+    end: tuple[int, int]
 
 class ChessPiece:
     piece_name: str = ''
@@ -27,17 +34,15 @@ class ChessPiece:
       raise NotImplementedError
 
     # {board : move, board : move}
-    def get_resulting_boards(self, board, x_position, y_position, color) -> dict[list[list[str]], tuple]:
-        res = {}
+    def get_resulting_boards(self, board, x_position, y_position, color) -> list[tuple[list[list[str]], tuple[int, int]]]:
         for possible_move in self.get_possible_moves(board, x_position, y_position, color):
               new_board = [row.copy() for row in board]
               new_board[x_position][y_position] = ''
-              new_board[possible_move[1][0]][possible_move[1][1]] = color + self.char_name
-              res[new_board] = possible_move
-        return res
+              new_board[possible_move[1][0]][possible_move[1][1]] = color + self.piece_name
+              yield new_board, possible_move
 
 
-    def get_current_value(self,x_position, y_position) -> float:
+    def get_current_value(self,x_position: int, y_position: int) -> int:
         return self.board_placement_heuristic[x_position][y_position] + self.piece_value
 
 class LeapingPiece(ChessPiece):
@@ -71,41 +76,50 @@ class SlidingPiece(ChessPiece):
 
 class King(LeapingPiece):
     piece_name = 'k'
-    piece_value = 100
+    piece_value = 20000
 
     possible_moves = [(1, 1), (1, 0), (0, 1), (-1, 1), (1, -1), (-1, 0), (0, -1), (-1, -1)]
     board_placement_heuristic = [
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-2, -3, -3, -4, -4, -3, -3, -2],
-        [-1, -2, -2, -3, -3, -2, -2, -1],
-        [2, 2, 0, 0, 0, 0, 2, 2],
-        [2, 3, 1, 0, 0, 1, 3, 2]
+        [-30, -40, -40, -50, -50, -40, -40, -30],
+        [-30, -40, -40, -50, -50, -40, -40, -30],
+        [-30, -40, -40, -50, -50, -40, -40, -30],
+        [-30, -40, -40, -50, -50, -40, -40, -30],
+        [-20, -30, -30, -40, -40, -30, -30, -20],
+        [-10, -20, -20, -20, -20, -20, -20, -10],
+        [20, 20,  0,  0,  0,  0, 20, 20],
+        [20, 30, 10,  0,  0, 10, 30, 20]
     ]
 
 class Knight(LeapingPiece):
     piece_name = 'n'
-    piece_value = 3
+    piece_value = 320
 
     possible_moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
-    board_placement_heuristic = []
+    board_placement_heuristic = [
+        [-50, -40, -30, -30, -30, -30, -40, -50],
+        [-40, -20,  0,  0,  0,  0, -20, -40],
+        [-30,  0, 10, 15, 15, 10,  0, -30],
+        [-30,  5, 15, 20, 20, 15,  5, -30],
+        [-30,  0, 15, 20, 20, 15,  0, -30],
+        [-30,  5, 10, 15, 15, 10,  5, -30],
+        [-40, -20,  0,  5,  5,  0, -20, -40],
+        [-50, -40, -30, -30, -30, -30, -40, -50]
+    ]
 
 
 class Pawn(ChessPiece):
     piece_name = 'p'
-    piece_value = 1
+    piece_value = 100
 
     possible_moves = [(0, 1)]
     board_placement_heuristic = [
         [0, 0, 0, 0, 0, 0, 0, 0],
-        [5, 5, 5, 5, 5, 5, 5, 5],
-        [1, 1, 2, 3, 3, 2, 1, 1],
-        [0, 0, 0, 2, 2, 0, 0, 0],
-        [1, -1, -2, 0, 0, -2, -1, 1],
-        [1, 2, 2, -2, -2, 2, 2, 1],
-        [1, 1, 1, -3, -3, 1, 1, 1],
+        [50, 50, 50, 50, 50, 50, 50, 50],
+        [10, 10, 20, 30, 30, 20, 10, 10],
+        [5, 5, 10, 25, 25, 10, 5, 5],
+        [0, 0, 0, 20, 20, 0, 0, 0],
+        [5, -5, -10, 0, 0, -10, -5, 5],
+        [5, 10, 10, -20, -20, 10, 10, 5],
         [0, 0, 0, 0, 0, 0, 0, 0]
     ]
 
@@ -135,27 +149,91 @@ class Pawn(ChessPiece):
 
 class Rock(SlidingPiece):
     piece_name = 'r'
-    piece_value = 3
+    piece_value = 500
 
     possible_moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-    board_placement_heuristic = []
+    board_placement_heuristic = [
+        [0,  0,  0,  0,  0,  0,  0,  0],
+        [5, 10, 10, 10, 10, 10, 10,  5],
+        [-5, 0,  0,  0,  0,  0,  0, -5],
+        [-5, 0,  0,  0,  0,  0,  0, -5],
+        [-5, 0,  0,  0,  0,  0,  0, -5],
+        [-5, 0,  0,  0,  0,  0,  0, -5],
+        [-5, 0,  0,  0,  0,  0,  0, -5],
+        [0, 0,  0,  5,  5,  0,  0,  0]
+    ]
 
 class Bishop(SlidingPiece):
     piece_name = 'b'
-    piece_value = 3
+    piece_value = 330
 
     possible_moves = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
-    board_placement_heuristic = []
+    board_placement_heuristic = [
+        [-20, -10, -10, -10, -10, -10, -10, -20],
+        [-10,  0,  0,  0,  0,  0,  0, -10],
+        [-10,  0,  5, 10, 10,  5,  0, -10],
+        [-10,  5,  5, 10, 10,  5,  5, -10],
+        [-10,  0, 10, 10, 10, 10,  0, -10],
+        [-10, 10, 10, 10, 10, 10, 10, -10],
+        [-10,  5,  0,  0,  0,  0,  5, -10],
+        [-20, -10, -10, -10, -10, -10, -10, -20]
+    ]
 
 class Queen(SlidingPiece):
     piece_name = 'q'
-    piece_value = 9
+    piece_value = 900
 
     possible_moves = [(1, 1), (1, 0), (0, 1), (-1, 1), (1, -1), (-1, 0), (0, -1), (-1, -1)]
-    board_placement_heuristic = []
+    board_placement_heuristic = [
+        [-20, -10, -10, -5, -5, -10, -10, -20],
+        [-10, 0,  0,  0,  0,  0,  0, -10],
+        [-10, 0,  5,  5,  5,  5,  0, -10],
+        [-5,  0,  5,  5,  5,  5,  0, -5],
+        [0,   0,  5,  5,  5,  5,  0, -5],
+        [-10, 5,  5,  5,  5,  5,  0, -10],
+        [-10, 0,  5,  0,  0,  0,  0, -10],
+        [-20, -10, -10, -5, -5, -10, -10, -20]
+    ]
 
+class Board:
 
-piece_dictionary = {}
+    piece_dictionary = {'k': King(), 'n': Knight(), 'p': Pawn(), 'r': Rock(), 'b': Bishop(), 'q': Queen()}
+
+    def get_current_value(self, board: list[list[str]], color: str):
+        res = 0
+
+        for y in range(len(board)):
+            for x in range(len(board[0])):
+                square = board[y][x]
+                if square != "":
+                    square_piece = square[0]
+                    square_color = square[1]
+                    if square_color == color:
+                        res += self.piece_dictionary[square_piece].get_current_value(x, y)
+                    else:
+                        res -= self.piece_dictionary[square_piece].get_current_value(x, y)
+        return res
+
+    def get_possible_boards(self, board: list[list[str]], color: str):
+        boards: list[tuple[list[list[str]], tuple[int, int]]] = []
+        for y in range(len(board)):
+            for x in range(len(board[0])):
+                square = board[y][x]
+                if square != "":
+                    square_piece = square[0]
+                    square_color = square[1]
+                    if square_color == color:
+                        boards += (self.piece_dictionary[square_piece].get_resulting_boards(board, x, y, color))
+
+        # Transform the pons on the last row of the board into queens
+        for board, move in boards:
+            for x in range(len(board[0])):
+                if board[0][x] == 'pw':
+                    board[0][x] = 'qw'
+                elif board[len(board) - 1][x] == 'pb':
+                    board[len(board) - 1][x] = 'qb'
+        return boards
+
 
 #   Simply move the pawns forward and tries to capture as soon as possible
 def chess_bot(player_sequence, board, time_budget, **kwargs):
