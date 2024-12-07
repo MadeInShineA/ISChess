@@ -10,7 +10,7 @@ import random
 
 from PyQt6 import QtCore
 
-from Bots.AB import Board
+from Bots.AB import Board, ChessBoard, Move
 #   Be careful with modules to import from the root (don't forget the Bots.)
 from Bots.ChessBotList import register_chess_bot
 
@@ -20,24 +20,22 @@ from Bots.ChessBotList import register_chess_bot
 chess_board = Board()
 def chess_bot(player_sequence, board, time_budget, **kwargs):
 
-    print(board)
     color = player_sequence[1]
     print(f"Color: {color}")
-    moves = []
 
-    board_value = chess_board.get_current_value(board, color)
+    converted_board = ChessBoard(board)
+    board_value = chess_board.get_current_value(converted_board, color)
     print(f"Board value: {board_value}")
 
-    possible_boards = chess_board.get_possible_boards(board, color)
-    print(f"Possible boards: {possible_boards}")
+    possible_boards: list[tuple[ChessBoard, Move]] = chess_board.get_possible_boards(converted_board, color)
 
-    for y in range(board.shape[0]):
-        for x in range(board.shape[1]):
-            for piece in chess_board.piece_dictionary.values():
-                if board[y,x] == piece.piece_name + color:
-                    for move in piece.get_possible_moves(board, x, y, color):
-                        moves.append(move)
-    return random.choice(moves)
+    moves = []
+    for possible_board, move in possible_boards:
+        moves.append(move)
+
+    chosen_move = random.choice(moves)
+
+    return chosen_move.start, chosen_move.end
 
 #   Example how to register the function
 register_chess_bot("TestBot", chess_bot)

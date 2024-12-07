@@ -22,6 +22,10 @@ class Move:
     start: tuple[int, int]
     end: tuple[int, int]
 
+@dataclass
+class ChessBoard:
+    board: list[list[str]]
+
 class ChessPiece:
     piece_name: str = ''
     piece_value: int = 0
@@ -30,16 +34,23 @@ class ChessPiece:
     possible_moves: list[tuple[int]] = []
     board_placement_heuristic: list[list[int]] = []
 
-    def get_possible_moves(self, board: list[list[str]], x_position: int, y_position: int, color: str) -> list[tuple[tuple[int, int], tuple[int, int]]]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> list[Move]:
       raise NotImplementedError
 
     # {board : move, board : move}
-    def get_resulting_boards(self, board, x_position, y_position, color) -> list[tuple[list[list[str]], tuple[int, int]]]:
+    def get_resulting_boards(self, board: ChessBoard, x_position, y_position, color) -> list[tuple[ChessBoard, Move]]:
         for possible_move in self.get_possible_moves(board, x_position, y_position, color):
-              new_board = [row.copy() for row in board]
-              new_board[x_position][y_position] = ''
-              new_board[possible_move[1][0]][possible_move[1][1]] = color + self.piece_name
-              yield new_board, possible_move
+            new_board = ChessBoard(board.board)
+            new_board.board[x_position][y_position] = ''
+            new_board.board[possible_move.end[0]][possible_move.end[1]] = color + self.piece_name
+
+            # Change the last row pawns to queens
+            if possible_move.end[0] == 0 and color == 'w' and self.piece_name == 'p':
+                new_board.board[possible_move.end[0]][possible_move.end[1]] = 'wq'
+            elif possible_move.end[0] == len(board.board) - 1 and color == 'b' and self.piece_name == 'p':
+                new_board.board[possible_move.end[0]][possible_move.end[1]] = 'bq'
+
+            yield new_board, possible_move
 
 
     def get_current_value(self,x_position: int, y_position: int) -> int:
@@ -47,27 +58,27 @@ class ChessPiece:
 
 class LeapingPiece(ChessPiece):
     @override
-    def get_possible_moves(self, board: list[list[str]], x_position: int, y_position: int, color: str) -> list[tuple[tuple[int, int], tuple[int, int]]]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> list[Move]:
         for move in self.possible_moves:
             x: int = x_position + move[0]
             y: int = y_position + move[1]
 
-            if x < 0 or x >= len(board) or y < 0 or y >= len(board[0]):
+            if x < 0 or x >= len(board.board) or y < 0 or y >= len(board.board[0]):
                 continue
-            if board[y][x] == '' or board[y][x][1] != color:
-                yield (y_position, x_position), (y, x)
+            if board.board[y][x] == '' or board.board[y][x][1] != color:
+                yield Move((y_position, x_position), (y, x))
 
 class SlidingPiece(ChessPiece):
     @override
-    def get_possible_moves(self, board: list[list[str]], x_position: int, y_position: int, color: str) -> list[tuple[tuple[int, int], tuple[int, int]]]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> list[Move]:
         for move in self.possible_moves:
             x: int = x_position + move[0]
             y: int = y_position + move[1]
-            while 0 <= x < len(board) and 0 <= y < len(board[0]):
-                if board[y][x] == '':
-                    yield (y_position, x_position), (y, x)
-                elif board[y][x][1] != color:
-                    yield (y_position, x_position), (y, x)
+            while 0 <= x < len(board.board) and 0 <= y < len(board.board[0]):
+                if board.board[y][x] == '':
+                    yield Move((y_position, x_position), (y, x))
+                elif board.board[y][x][1] != color:
+                    yield Move((y_position, x_position), (y, x))
                     break
                 else:
                     break
@@ -124,27 +135,27 @@ class Pawn(ChessPiece):
     ]
 
     @override
-    def get_possible_moves(self, board: list[list[str]], x_position: int, y_position: int, color: str) -> list[tuple[tuple[int, int], tuple[int, int]]]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> list[Move]:
 
         # Regular moves
         for move in self.possible_moves:
             x: int = x_position + move[0]
             y: int = y_position + move[1]
 
-            if x < 0 or x >= len(board) or y < 0 or y >= len(board[0]):
+            if x < 0 or x >= len(board.board) or y < 0 or y >= len(board.board[0]):
                 continue
-            if board[y][x] == '':
-                yield (y_position, x_position), (y, x)
+            if board.board[y][x] == '':
+                yield Move((y_position, x_position), (y, x))
 
         # Account for the possible eating moves
         for move in [(1, 1), (-1, 1)]:
             x: int = x_position + move[0]
             y: int = y_position + move[1]
 
-            if x < 0 or x >= len(board) or y < 0 or y >= len(board[0]):
+            if x < 0 or x >= len(board.board) or y < 0 or y >= len(board.board[0]):
                 continue
-            if board[y][x] != '' and board[y][x][1] != color:
-                yield (y_position, x_position), (y, x)
+            if board.board[y][x] != '' and board.board[y][x][1] != color:
+                yield Move((y_position, x_position), (y, x))
 
 
 class Rock(SlidingPiece):
@@ -199,12 +210,12 @@ class Board:
 
     piece_dictionary = {'k': King(), 'n': Knight(), 'p': Pawn(), 'r': Rock(), 'b': Bishop(), 'q': Queen()}
 
-    def get_current_value(self, board: list[list[str]], color: str):
+    def get_current_value(self, board: ChessBoard, color: str) -> int:
         res = 0
 
-        for y in range(len(board)):
-            for x in range(len(board[0])):
-                square = board[y][x]
+        for y in range(len(board.board)):
+            for x in range(len(board.board[0])):
+                square = board.board[y][x]
                 if square != "":
                     square_piece = square[0]
                     square_color = square[1]
@@ -214,26 +225,18 @@ class Board:
                         res -= self.piece_dictionary[square_piece].get_current_value(x, y)
         return res
 
-    def get_possible_boards(self, board: list[list[str]], color: str):
-        boards: list[tuple[list[list[str]], tuple[int, int]]] = []
-        for y in range(len(board)):
-            for x in range(len(board[0])):
-                square = board[y][x]
+    def get_possible_boards(self, board: ChessBoard, color: str) -> list[tuple[ChessBoard, Move]]:
+
+        res: list[tuple[ChessBoard, Move]] = []
+        for y in range(len(board.board)):
+            for x in range(len(board.board[0])):
+                square = board.board[y][x]
                 if square != "":
                     square_piece = square[0]
                     square_color = square[1]
                     if square_color == color:
-                        boards += (self.piece_dictionary[square_piece].get_resulting_boards(board, x, y, color))
-
-        # Transform the pons on the last row of the board into queens
-        for board, move in boards:
-            for x in range(len(board[0])):
-                if board[0][x] == 'pw':
-                    board[0][x] = 'qw'
-                elif board[len(board) - 1][x] == 'pb':
-                    board[len(board) - 1][x] = 'qb'
-        return boards
-
+                        res += self.piece_dictionary[square_piece].get_resulting_boards(board, x, y, color)
+        return res
 
 #   Simply move the pawns forward and tries to capture as soon as possible
 def chess_bot(player_sequence, board, time_budget, **kwargs):
