@@ -246,7 +246,7 @@ class Board:
                 if square != "":
                     square_piece = square[0]
                     square_color = square[1]
-                    if square_color == 'w':
+                    if square_color == self.color_on_top:
                         res += self.piece_dictionary[square_piece].get_current_value(x, y)
                     else:
                         res -= self.piece_dictionary[square_piece].get_current_value(x, y)
