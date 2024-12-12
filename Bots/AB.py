@@ -1,7 +1,7 @@
 from pickle import GLOBAL
 from typing import override
 from dataclasses import dataclass
-
+from typing import Generator
 #
 #   Example function to be implemented for
 #       Single important function is next_best
@@ -31,24 +31,24 @@ class ChessPiece:
     piece_value: int = 0
 
     # possible_moves = [(x,y), (x,y), ...]
-    possible_moves: list[tuple[int]] = []
+    possible_moves: list[tuple[int, int]] = []
     board_placement_heuristic: list[list[int]] = []
 
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> list[Move]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> Generator[Move, None, None]:
       raise NotImplementedError
 
     # {board : move, board : move}
-    def get_resulting_boards(self, board: ChessBoard, x_position, y_position, color) -> list[tuple[ChessBoard, Move]]:
+    def get_resulting_boards(self, board: ChessBoard, x_position, y_position, color) -> Generator[tuple[ChessBoard, Move], None, None]:
         for possible_move in self.get_possible_moves(board, x_position, y_position, color):
-            new_board = ChessBoard(board.board)
-            new_board.board[x_position][y_position] = ''
-            new_board.board[possible_move.end[0]][possible_move.end[1]] = color + self.piece_name
+            new_board = ChessBoard(board.board.copy())
+            new_board.board[possible_move.start[1]][possible_move.start[0]] = ''
+            new_board.board[possible_move.end[1]][possible_move.end[0]] = self.piece_name + color
 
-            # Change the last row pawns to queens
-            if possible_move.end[0] == 0 and color == 'w' and self.piece_name == 'p':
-                new_board.board[possible_move.end[0]][possible_move.end[1]] = 'wq'
-            elif possible_move.end[0] == len(board.board) - 1 and color == 'b' and self.piece_name == 'p':
-                new_board.board[possible_move.end[0]][possible_move.end[1]] = 'bq'
+            # # Change the last row pawns to queens
+            # if possible_move.end[0] == 0 and color == 'w' and self.piece_name == 'p':
+            #     new_board.board[possible_move.end[0]][possible_move.end[1]] = 'qw'
+            # elif possible_move.end[0] == len(board.board) - 1 and color == 'b' and self.piece_name == 'p':
+            #     new_board.board[possible_move.end[0]][possible_move.end[1]] = 'qp'
 
             yield new_board, possible_move
 
@@ -58,7 +58,7 @@ class ChessPiece:
 
 class LeapingPiece(ChessPiece):
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> list[Move]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> Generator[Move, None, None]:
         for move in self.possible_moves:
             x: int = x_position + move[0]
             y: int = y_position + move[1]
@@ -70,7 +70,7 @@ class LeapingPiece(ChessPiece):
 
 class SlidingPiece(ChessPiece):
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> list[Move]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> Generator[Move, None, None]:
         for move in self.possible_moves:
             x: int = x_position + move[0]
             y: int = y_position + move[1]
@@ -135,7 +135,7 @@ class Pawn(ChessPiece):
     ]
 
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> list[Move]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> Generator[Move, None, None]:
 
         # Regular moves
         for move in self.possible_moves:
@@ -219,7 +219,7 @@ class Board:
                 if square != "":
                     square_piece = square[0]
                     square_color = square[1]
-                    if square_color == color:
+                    if square_color == 'w':
                         res += self.piece_dictionary[square_piece].get_current_value(x, y)
                     else:
                         res -= self.piece_dictionary[square_piece].get_current_value(x, y)
@@ -238,14 +238,50 @@ class Board:
                         res += self.piece_dictionary[square_piece].get_resulting_boards(board, x, y, color)
         return res
 
-#   Simply move the pawns forward and tries to capture as soon as possible
 def chess_bot(player_sequence, board, time_budget, **kwargs):
+    board_class: Board = Board()
+    best_move: Move = Move((0, 0), (0, 0))
+    
+    def minmax(chess_board: ChessBoard, depth: int, color: str) -> float:
+        nonlocal board_class
+        nonlocal best_move
+        if depth == 0:
+            return board_class.get_current_value(chess_board, color)
+        if color == 'w':
+            max_value: float = float('-inf')
+            for board, move in board_class.get_possible_boards(chess_board, color):
+                value = minmax(board, depth - 1, 'b')
+                if value > max_value:
+                    max_value = value
+                    best_move = move
+            return max_value
+
+        else:
+            min_value = float('inf')
+            for board, move in board_class.get_possible_boards(chess_board, color):
+                value = minmax(board, depth - 1, 'w')
+                min_value = min(min_value, value)
+
+            return min_value
+
+    if player_sequence[1] == 'b':
+        board = board[::-1]
+        print(board)
+
+
+    minmax(ChessBoard(board), 3,  player_sequence[1])
+
+    return best_move.start, best_move.end
+
+
+#   Simply move the pawns forward and tries to capture as soon as possible
+def chess_bot_robin(player_sequence, board, time_budget, **kwargs):
     if player_sequence[0]== our_player_sequence :
         return minimax(board,4)[1]
 
 
     return (0,0), (0,0)
-def minimax(board, depth) -> tuple[float, tuple[tuple[int, int],tuple[int, int]]]:
+def minimax_robin(board, depth) -> tuple[float, tuple[tuple[int, int],tuple[int, int]]]:
     if  depth == 0: #todo ajouter: or la game est fini
         return evaluate(board)
 
