@@ -1,7 +1,9 @@
+import copy
 from pickle import GLOBAL
 from typing import override
 from dataclasses import dataclass
 from typing import Generator
+import numpy as np
 #
 #   Example function to be implemented for
 #       Single important function is next_best
@@ -15,7 +17,6 @@ from PyQt6 import QtCore
 #   Be careful with modules to import from the root (don't forget the Bots.)
 from Bots.ChessBotList import register_chess_bot
 
-our_player_sequence = "w"
 
 @dataclass
 class Move:
@@ -30,19 +31,18 @@ class ChessPiece:
     piece_name: str = ''
     piece_value: int = 0
 
-    # possible_moves = [(x,y), (x,y), ...]
     possible_moves: list[tuple[int, int]] = []
     board_placement_heuristic: list[list[int]] = []
 
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> Generator[Move, None, None]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top: str) -> Generator[Move, None, None]:
       raise NotImplementedError
 
     # {board : move, board : move}
-    def get_resulting_boards(self, board: ChessBoard, x_position, y_position, color) -> Generator[tuple[ChessBoard, Move], None, None]:
-        for possible_move in self.get_possible_moves(board, x_position, y_position, color):
-            new_board = ChessBoard(board.board.copy())
-            new_board.board[possible_move.start[1]][possible_move.start[0]] = ''
-            new_board.board[possible_move.end[1]][possible_move.end[0]] = self.piece_name + color
+    def get_resulting_boards(self, board: ChessBoard, x_position, y_position, color: str, color_on_top: str) -> Generator[tuple[ChessBoard, Move], None, None]:
+        for possible_move in self.get_possible_moves(board, x_position, y_position, color, color_on_top):
+            new_board = ChessBoard(copy.deepcopy(board.board))
+            new_board.board[possible_move.start[0]][possible_move.start[1]] = ''
+            new_board.board[possible_move.end[0]][possible_move.end[1]] = self.piece_name + color
 
             # # Change the last row pawns to queens
             # if possible_move.end[0] == 0 and color == 'w' and self.piece_name == 'p':
@@ -54,14 +54,17 @@ class ChessPiece:
 
 
     def get_current_value(self,x_position: int, y_position: int) -> int:
-        return self.board_placement_heuristic[x_position][y_position] + self.piece_value
+        # return self.board_placement_heuristic[x_position][y_position] + self.piece_value
+        return  self.piece_value
 
 class LeapingPiece(ChessPiece):
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> Generator[Move, None, None]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top) -> Generator[Move, None, None]:
+        direction: int = 1 if color == color_on_top else -1
+
         for move in self.possible_moves:
             x: int = x_position + move[0]
-            y: int = y_position + move[1]
+            y: int = y_position + move[1] * direction
 
             if x < 0 or x >= len(board.board) or y < 0 or y >= len(board.board[0]):
                 continue
@@ -70,10 +73,12 @@ class LeapingPiece(ChessPiece):
 
 class SlidingPiece(ChessPiece):
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> Generator[Move, None, None]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top: str) -> Generator[Move, None, None]:
+        direction: int = 1 if color == color_on_top else -1
+
         for move in self.possible_moves:
             x: int = x_position + move[0]
-            y: int = y_position + move[1]
+            y: int = y_position + move[1] * direction
             while 0 <= x < len(board.board) and 0 <= y < len(board.board[0]):
                 if board.board[y][x] == '':
                     yield Move((y_position, x_position), (y, x))
@@ -83,14 +88,14 @@ class SlidingPiece(ChessPiece):
                 else:
                     break
                 x += move[0]
-                y += move[1]
+                y += (move[1]) * direction
 
 class King(LeapingPiece):
     piece_name = 'k'
     piece_value = 20000
 
     possible_moves = [(1, 1), (1, 0), (0, 1), (-1, 1), (1, -1), (-1, 0), (0, -1), (-1, -1)]
-    board_placement_heuristic = [
+    board_placement_heuristic_black_on_top = [
         [-30, -40, -40, -50, -50, -40, -40, -30],
         [-30, -40, -40, -50, -50, -40, -40, -30],
         [-30, -40, -40, -50, -50, -40, -40, -30],
@@ -101,12 +106,14 @@ class King(LeapingPiece):
         [20, 30, 10,  0,  0, 10, 30, 20]
     ]
 
+    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+
 class Knight(LeapingPiece):
     piece_name = 'n'
     piece_value = 320
 
     possible_moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
-    board_placement_heuristic = [
+    board_placement_heuristic_black_on_top = [
         [-50, -40, -30, -30, -30, -30, -40, -50],
         [-40, -20,  0,  0,  0,  0, -20, -40],
         [-30,  0, 10, 15, 15, 10,  0, -30],
@@ -117,13 +124,14 @@ class Knight(LeapingPiece):
         [-50, -40, -30, -30, -30, -30, -40, -50]
     ]
 
+    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
 
 class Pawn(ChessPiece):
     piece_name = 'p'
     piece_value = 100
 
     possible_moves = [(0, 1)]
-    board_placement_heuristic = [
+    board_placement_heuristic_black_on_top = [
         [0, 0, 0, 0, 0, 0, 0, 0],
         [50, 50, 50, 50, 50, 50, 50, 50],
         [10, 10, 20, 30, 30, 20, 10, 10],
@@ -134,23 +142,29 @@ class Pawn(ChessPiece):
         [0, 0, 0, 0, 0, 0, 0, 0]
     ]
 
+    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str) -> Generator[Move, None, None]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top: str) -> Generator[Move, None, None]:
+
+        direction: int = 1 if color == color_on_top else -1
 
         # Regular moves
         for move in self.possible_moves:
             x: int = x_position + move[0]
-            y: int = y_position + move[1]
+            y: int = y_position + move[1] * direction
+            print("Y: ", y)
 
             if x < 0 or x >= len(board.board) or y < 0 or y >= len(board.board[0]):
                 continue
             if board.board[y][x] == '':
+                print("Move: ", (y_position, x_position), (y, x))
                 yield Move((y_position, x_position), (y, x))
 
         # Account for the possible eating moves
         for move in [(1, 1), (-1, 1)]:
             x: int = x_position + move[0]
-            y: int = y_position + move[1]
+            y: int = y_position + move[1] * direction
 
             if x < 0 or x >= len(board.board) or y < 0 or y >= len(board.board[0]):
                 continue
@@ -163,7 +177,7 @@ class Rock(SlidingPiece):
     piece_value = 500
 
     possible_moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-    board_placement_heuristic = [
+    board_placement_heuristic_black_on_top = [
         [0,  0,  0,  0,  0,  0,  0,  0],
         [5, 10, 10, 10, 10, 10, 10,  5],
         [-5, 0,  0,  0,  0,  0,  0, -5],
@@ -174,12 +188,15 @@ class Rock(SlidingPiece):
         [0, 0,  0,  5,  5,  0,  0,  0]
     ]
 
+    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+
+
 class Bishop(SlidingPiece):
     piece_name = 'b'
     piece_value = 330
 
     possible_moves = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
-    board_placement_heuristic = [
+    board_placement_heuristic_black_on_top = [
         [-20, -10, -10, -10, -10, -10, -10, -20],
         [-10,  0,  0,  0,  0,  0,  0, -10],
         [-10,  0,  5, 10, 10,  5,  0, -10],
@@ -190,12 +207,15 @@ class Bishop(SlidingPiece):
         [-20, -10, -10, -10, -10, -10, -10, -20]
     ]
 
+    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+
+
 class Queen(SlidingPiece):
     piece_name = 'q'
     piece_value = 900
 
     possible_moves = [(1, 1), (1, 0), (0, 1), (-1, 1), (1, -1), (-1, 0), (0, -1), (-1, -1)]
-    board_placement_heuristic = [
+    board_placement_heuristic_black_on_top = [
         [-20, -10, -10, -5, -5, -10, -10, -20],
         [-10, 0,  0,  0,  0,  0,  0, -10],
         [-10, 0,  5,  5,  5,  5,  0, -10],
@@ -206,11 +226,18 @@ class Queen(SlidingPiece):
         [-20, -10, -10, -5, -5, -10, -10, -20]
     ]
 
+    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+
 class Board:
 
     piece_dictionary = {'k': King(), 'n': Knight(), 'p': Pawn(), 'r': Rock(), 'b': Bishop(), 'q': Queen()}
 
-    def get_current_value(self, board: ChessBoard, color: str) -> int:
+    color_on_top: str
+    def __init__(self, color_on_top: str):
+        self.color_on_top = color_on_top
+
+
+    def get_current_value(self, board:ChessBoard) -> int:
         res = 0
 
         for y in range(len(board.board)):
@@ -223,9 +250,11 @@ class Board:
                         res += self.piece_dictionary[square_piece].get_current_value(x, y)
                     else:
                         res -= self.piece_dictionary[square_piece].get_current_value(x, y)
+        print(board.board)
+        print("Value: ", res)
         return res
 
-    def get_possible_boards(self, board: ChessBoard, color: str) -> list[tuple[ChessBoard, Move]]:
+    def get_possible_boards(self,board:ChessBoard, color: str) -> list[tuple[ChessBoard, Move]]:
 
         res: list[tuple[ChessBoard, Move]] = []
         for y in range(len(board.board)):
@@ -235,87 +264,43 @@ class Board:
                     square_piece = square[0]
                     square_color = square[1]
                     if square_color == color:
-                        res += self.piece_dictionary[square_piece].get_resulting_boards(board, x, y, color)
+                        res += self.piece_dictionary[square_piece].get_resulting_boards(board, x, y, color, self.color_on_top)
         return res
 
-def chess_bot(player_sequence, board, time_budget, **kwargs):
-    board_class: Board = Board()
+def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
+
+    chess_board: ChessBoard = ChessBoard(actual_board)
+    board_class: Board = Board(player_sequence[1])
     best_move: Move = Move((0, 0), (0, 0))
+
     
-    def minmax(chess_board: ChessBoard, depth: int, color: str) -> float:
+    def minmax(board: ChessBoard,depth: int, color:str, maximize: bool = True) -> float:
         nonlocal board_class
         nonlocal best_move
+
+        opponent_color: str = 'w' if color == 'b' else 'b'
         if depth == 0:
-            return board_class.get_current_value(chess_board, color)
-        if color == 'w':
+            return board_class.get_current_value(board)
+        if maximize:
             max_value: float = float('-inf')
-            for board, move in board_class.get_possible_boards(chess_board, color):
-                value = minmax(board, depth - 1, 'b')
+            for board, move in board_class.get_possible_boards(board,color):
+                value = minmax(board,depth - 1, opponent_color, False)
                 if value > max_value:
                     max_value = value
                     best_move = move
             return max_value
-
         else:
             min_value = float('inf')
-            for board, move in board_class.get_possible_boards(chess_board, color):
-                value = minmax(board, depth - 1, 'w')
+            for board, move in board_class.get_possible_boards(board,color):
+                value = minmax(board,depth - 1, opponent_color, True)
                 min_value = min(min_value, value)
-
             return min_value
 
-    if player_sequence[1] == 'b':
-        board = board[::-1]
-        print(board)
+    print("Starting min max")
 
-
-    minmax(ChessBoard(board), 3,  player_sequence[1])
+    minmax(chess_board,1, player_sequence[1])
 
     return best_move.start, best_move.end
-
-
-#   Simply move the pawns forward and tries to capture as soon as possible
-def chess_bot_robin(player_sequence, board, time_budget, **kwargs):
-    if player_sequence[0]== our_player_sequence :
-        return minimax(board,4)[1]
-
-
-    return (0,0), (0,0)
-def minimax_robin(board, depth) -> tuple[float, tuple[tuple[int, int],tuple[int, int]]]:
-    if  depth == 0: #todo ajouter: or la game est fini
-        return evaluate(board)
-
-    best = -10000
-    mv = (0,0), (0,0)
-    #todo il faut prendre en compte que le meilleur coup de l'adversia
-    for move in board.moves():#listmove
-        board = simule_move(board,move)
-        res = minimax(board, depth - 1)
-        val = res[0]
-        mv = res[1]
-        if val > best:
-            best = val
-            mv = move
-
-    return best, mv
-
-def evaluate (board)  -> float:
-    res = 0.0
-    for x in board:
-        for y in x:
-            if y != "":
-                if y[0] == "w":
-                    res += piece_dictionary[x[0]].get_current_value(board.index(x),x.index(y))
-                else:
-                    res -= piece_dictionary[x[0]].get_current_value(board.index(x),x.index(y))
-    return res
-
-def simule_move(board,move) :
-    tmp = board[move[0]]
-    board[move[0][0]][move[0][1]] = ""
-    board[move[1][0]][move[1][1]] = tmp
-    return board
-
 
 #   Example how to register the function
 register_chess_bot("AB_BOT", chess_bot)

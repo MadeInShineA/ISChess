@@ -1,9 +1,9 @@
 0w01b2
-rw,nb,bw,qw,--,bw,nb,rw
+rw,nw,bw,qw,kw,bw,nw,rw
 pw,pw,pw,pw,pw,pw,pw,pw
---,--,--,pb,pb,pb,--,--
---,--,--,pb,kw,pb,--,bw
---,bb,--,pb,pb,pb,--,--
---,kb,--,--,--,--,--,--
+--,--,--,pb,--,--,--,--
+--,--,--,--,--,--,--,--
+--,--,--,--,--,--,--,--
+--,--,--,--,pw,--,--,--
 pb,pb,pb,pb,pb,pb,pb,pb
-rb,nw,bb,--,qb,bb,nw,rb
+rb,nb,bb,kb,qb,bb,nb,rb

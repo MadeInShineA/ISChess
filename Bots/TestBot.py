@@ -17,25 +17,25 @@ from Bots.ChessBotList import register_chess_bot
 #   Simply move the pawns forward and tries to capture as soon as possible
 
 
-chess_board = Board()
+# chess_board = Board()
 def chess_bot(player_sequence, board, time_budget, **kwargs):
-
-    color = player_sequence[1]
-    print(f"Color: {color}")
-
-    converted_board = ChessBoard(board)
-    board_value = chess_board.get_current_value(converted_board, color)
-    print(f"Board value: {board_value}")
-
-    possible_boards: list[tuple[ChessBoard, Move]] = chess_board.get_possible_boards(converted_board, color)
-
-    moves = []
-    for possible_board, move in possible_boards:
-        moves.append(move)
-
-    chosen_move = random.choice(moves)
-
-    return chosen_move.start, chosen_move.end
+    pass
+    # color = player_sequence[1]
+    # print(f"Color: {color}")
+    #
+    # converted_board = ChessBoard(board)
+    # board_value = chess_board.get_current_value(converted_board, color)
+    # print(f"Board value: {board_value}")
+    #
+    # possible_boards: list[tuple[ChessBoard, Move]] = chess_board.get_possible_boards(converted_board, color)
+    #
+    # moves = []
+    # for possible_board, move in possible_boards:
+    #     moves.append(move)
+    #
+    # chosen_move = random.choice(moves)
+    #
+    # return chosen_move.start, chosen_move.end
 
 #   Example how to register the function
 register_chess_bot("TestBot", chess_bot)
