@@ -1,3 +1,4 @@
+import random
 
 from Bots.AB_Board import Board
 from Bots.ChessBotList import register_chess_bot
@@ -17,7 +18,7 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
             max_value = float('-inf')
             for new_board, _ in board_class.get_possible_boards(board, color):
                 max_value = max(max_value, evaluate_minmax(new_board, depth - 1, opponent_color, False))
-            return max_value
+            return max_value + random.randint(-5, 5)
         else:
             min_value = float('inf')
             for new_board, _ in board_class.get_possible_boards(board, color):

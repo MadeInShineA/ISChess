@@ -1,8 +1,7 @@
 import random
 import copy
-from typing import Generator, override
 import numpy as np
-
+from typing import Generator, override
 from Bots.AB_Data_Class import ChessBoard, Move
 
 
@@ -23,7 +22,7 @@ class ChessPiece:
             yield new_board, possible_move
 
     def get_current_value(self, x_position: int, y_position: int) -> int:
-        return self.piece_value + random.randint(0, 10)
+        return self.piece_value
 
 class LeapingPiece(ChessPiece):
     @override
@@ -69,7 +68,8 @@ class King(LeapingPiece):
         [20, 30, 10,  0,  0, 10, 30, 20]
     ]
 
-    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
 class Knight(LeapingPiece):
     piece_name = 'n'
@@ -87,7 +87,8 @@ class Knight(LeapingPiece):
         [-50, -40, -30, -30, -30, -30, -40, -50]
     ]
 
-    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
 class Pawn(ChessPiece):
     piece_name = 'p'
@@ -105,7 +106,8 @@ class Pawn(ChessPiece):
         [0, 0, 0, 0, 0, 0, 0, 0]
     ]
 
-    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
     @override
     def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top: str) -> Generator[Move, None, None]:
@@ -147,7 +149,8 @@ class Rock(SlidingPiece):
         [0, 0,  0,  5,  5,  0,  0,  0]
     ]
 
-    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
 class Bishop(SlidingPiece):
     piece_name = 'b'
@@ -165,7 +168,8 @@ class Bishop(SlidingPiece):
         [-20, -10, -10, -10, -10, -10, -10, -20]
     ]
 
-    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 class Queen(SlidingPiece):
     piece_name = 'q'
     piece_value = 900
@@ -182,5 +186,6 @@ class Queen(SlidingPiece):
         [-20, -10, -10, -5, -5, -10, -10, -20]
     ]
 
-    board_placement_heuristic_white_on_top = np.flipud(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
+    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
