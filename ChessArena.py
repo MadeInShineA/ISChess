@@ -10,11 +10,11 @@ from Bots import *
 
 import numpy as np
 
+
 #   Wrap up for QApplication
 class ChessApp(QtWidgets.QApplication):
-    def __init__(self):
+    def __init__(self) -> object:
         super().__init__([])
-
 
     def start(self):
         arena = ChessArena()
