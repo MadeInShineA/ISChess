@@ -1,0 +1,2 @@
+class TimeExceededException(Exception):
+    pass
