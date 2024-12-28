@@ -16,11 +16,11 @@ class ChessAppSimulation(QtWidgets.QApplication):
     def __init__(self) -> object:
         super().__init__([])
 
-    def start(self, white_bot: str, black_bot: str, number_of_turns: int):
-        arena = ChessArena()
+    def start(self, white_bot: str, black_bot: str, number_of_turns: int, time_per_turn: float):
+        arena = ChessArena(number_of_turns, time_per_turn)
         arena.show()
         arena.start()
-        arena.launch_game(white_bot, black_bot, number_of_turns)
+        arena.launch_game(white_bot, black_bot)
         self.exec()
 
 #   Main window to handle the chess board
@@ -30,7 +30,7 @@ CHESS_COLOR = {"w" : [QtGui.QColor(255,255,255), QtGui.QColor(0,0,0)], "b" : [Qt
 COLOR_NAMES = {"w" : "White", "b":"Black", "r":"Red", "y":"Yellow"}
 CHESS_PIECES_NAMES = {"k":"King", "q":"Queen", "n":"Knight", "b":"Bishop", "r":"Rook", "p":"Pawn"}
 class ChessArena(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, number_of_turns: int, time_per_turn: float):
         super().__init__()
 
         uic.loadUi("Data/UI.ui", self)
@@ -49,6 +49,10 @@ class ChessArena(QtWidgets.QWidget):
 
         self.current_player = None
 
+        self.number_of_turns: int = number_of_turns
+
+        self.time_per_turn: float = time_per_turn
+
     def add_system_message(self, message):
         msg_widget = QtWidgets.QLabel(message)
         msg_widget.setWordWrap(True)
@@ -58,7 +62,7 @@ class ChessArena(QtWidgets.QWidget):
         self.systemMessagesBox.verticalScrollBar().setSliderPosition(self.systemMessagesBox.verticalScrollBar().maximum())
 
     #   Called to start the bot simulation
-    def launch_game(self, white_bot: str, black_bot: str, number_of_turns: int):
+    def launch_game(self, white_bot: str, black_bot: str):
         self.add_system_message("# Starting new Game #")
         #   Prepare AIs
 
@@ -69,17 +73,17 @@ class ChessArena(QtWidgets.QWidget):
         #     self.players_AI[color] = CHESS_BOT_LIST[self.players_AI_choice[color].currentText()]
         #     self.add_system_message("AI #" + str(cid) + " = " + str(self.players_AI[color].__name__))
 
-        self.nbr_turn_to_play = int(self.maxTurnBudget.text())
-        self.max_time_budget = float(self.timeBudgetInput.text())
+        #self.nbr_turn_to_play = int(self.maxTurnBudget.text())
+        #self.time_per_turn = float(self.timeBudgetInput.text())
 
-        self.play_next_turn(number_of_turns)
+        self.play_next_turn()
 
-    def play_next_turn(self, number_of_turns: int):
+    def play_next_turn(self):
         if self.current_player is not None:
             print("Cannot launch new turn while already processing")
             return
 
-        if self.nbr_turn_to_play == number_of_turns:
+        if self.number_of_turns == 0:
             print("No more play to do")
             self.end_game(None)
             return
@@ -88,12 +92,12 @@ class ChessArena(QtWidgets.QWidget):
 
         #   Prepare board view
         rotated_view_board = np.rot90(self.board, int(next_player_color[2]))
-        self.current_player = ParallelTurn(self.players_AI[next_player_color[1]], self.player_order, rotated_view_board, self.max_time_budget)
+        self.current_player = ParallelTurn(self.players_AI[next_player_color[1]], self.player_order, rotated_view_board, self.time_per_turn)
         self.current_player.setTerminationEnabled(True)
         self.current_player.start()
 
         #   Timer to call
-        QtCore.QTimer.singleShot(int(self.max_time_budget * 1000 * 1.05), self.end_turn)
+        QtCore.QTimer.singleShot(int(self.time_per_turn * 1000 * 1.05), self.end_turn)
 
 
     def end_turn(self):
@@ -140,12 +144,12 @@ class ChessArena(QtWidgets.QWidget):
 
         #   Current player goes at the end of the play queue
         self.player_order = self.player_order[3:] + self.player_order[0:3]
-        self.nbr_turn_to_play -= 1
+        self.number_of_turns -= 1
 
         if all_other_defeated:
             self.end_game(player_color)
         else:
-            self.play_next_turn(1)
+            self.play_next_turn()
 
 
     def end_game(self, winner):

@@ -4,13 +4,13 @@ from PyQt6.QtWidgets import QApplication
 
 from ChessArenaSimulation import ChessArena, ChessAppSimulation
 
-def simulate_game(white_bot: str, black_bot: str):
+def simulate_game(white_bot: str, black_bot: str, number_of_turns: int, time_per_turn: float):
     app = ChessAppSimulation()
-    app.start(white_bot, black_bot, 10)
+    app.start(white_bot, black_bot, number_of_turns, time_per_turn)
 
 if __name__ == '__main__':
     pool = ThreadPool(4)
 
-    simulate_game("AB_BOT", "AB_BOT")
+    simulate_game("AB_BOT", "AB_BOT", 5, 2)
 
 
