@@ -16,5 +16,5 @@ if __name__ == '__main__':
             simulate_game("minmax_stats", "prunning_stats", 5, 2)
     elif len(args) == 5:
         white_bot, black_bot, number_of_turns, time_per_turn = args[1:]
-        simulate_game(white_bot, black_bot, int(number_of_turns), int(time_per_turn))
+        simulate_game(white_bot, black_bot, int(number_of_turns), float(time_per_turn))
 
