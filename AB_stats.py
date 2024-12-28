@@ -11,6 +11,7 @@ def simulate_game(white_bot: str, black_bot: str, number_of_turns: int, time_per
 if __name__ == '__main__':
     pool = ThreadPool(4)
 
-    simulate_game("minmax_stats", "prunning_stats", 5, 2)
+    for i in range(5):
+        simulate_game("minmax_stats", "prunning_stats", 5, 2)
 
 

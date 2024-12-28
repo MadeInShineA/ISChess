@@ -157,6 +157,7 @@ class ChessArena(QtWidgets.QWidget):
             self.add_system_message("# Match ended in a draw")
         else:
             self.add_system_message("# " + str(COLOR_NAMES[winner]) + " won the match")
+        self.close()
 
     def select_and_load_board(self):
         path = QtWidgets.QFileDialog.getOpenFileName(self, "Select board", "C:\\Users\\Louis\\Desktop\\ISChess\\Data\\maps", "Board File (*.brd)")
