@@ -1,6 +1,7 @@
+use rand::seq::SliceRandom;
+use std::env;
 use std::process::{Command, Stdio};
 use std::thread;
-use rand::seq::SliceRandom;
 
 fn run_python_script(thread_id: usize, arguments: &[&str; 4]) {
     println!("Thread {}: Starting Python script", thread_id);
@@ -14,16 +15,28 @@ fn run_python_script(thread_id: usize, arguments: &[&str; 4]) {
         .status(); // Execute command
 
     match status {
-        Ok(status) if status.success() => println!("Thread {}: AB_stats.py executed successfully", thread_id),
-        Ok(status) => eprintln!("Thread {}: AB_stats.py failed with status: {}", thread_id, status),
+        Ok(status) if status.success() => {
+            println!("Thread {}: AB_stats.py executed successfully", thread_id)
+        }
+        Ok(status) => eprintln!(
+            "Thread {}: AB_stats.py failed with status: {}",
+            thread_id, status
+        ),
         Err(e) => eprintln!("Thread {}: Failed to execute AB_stats.py: {}", thread_id, e),
     }
 }
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 2 {
+        eprint!("Usage cargo run -- NUMBER_OF_THREADS");
+        std::process::exit(1);
+    }
+
     let mut handles = vec![];
-    
-    const NUMBER_OF_THREADS: usize = 20;
+
+    let number_of_threads: usize = args[1].parse().expect("Invalid NUMBER_OF_THREADS value");
 
     let bot_options = ["minmax_stats", "prunning_stats"];
     let number_of_turns_option = ["5", "10", "15"];
@@ -31,7 +44,7 @@ fn main() {
 
     let mut rng = rand::thread_rng();
 
-    for i in 0..NUMBER_OF_THREADS {
+    for i in 0..number_of_threads {
         let white_bot: &str = bot_options.choose(&mut rng).unwrap();
         let black_bot: &str = bot_options.choose(&mut rng).unwrap();
         let number_of_turns: &str = number_of_turns_option.choose(&mut rng).unwrap();
