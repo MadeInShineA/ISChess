@@ -154,7 +154,24 @@ class ChessArena(QtWidgets.QWidget):
 
     def end_game(self, winner):
         if winner is None:
-            self.add_system_message("# Match ended in a draw")
+            white_pieces_counter: int = 0
+            black_pieces_counter: int = 0
+
+            for row in self.board:
+                for square in row:
+                    if square != '':
+                        if square[1] == 'w':
+                            white_pieces_counter += 1
+                        else:
+                            black_pieces_counter += 1
+
+            if white_pieces_counter == black_pieces_counter:
+                self.add_system_message("# Match ended in a draw")
+            else:
+                if white_pieces_counter > black_pieces_counter:
+                    self.add_system_message(f"White won with {white_pieces_counter} pieces")
+                else:
+                    self.add_system_message(f"Black won with {black_pieces_counter} pieces")
         else:
             self.add_system_message("# " + str(COLOR_NAMES[winner]) + " won the match")
         self.close()
