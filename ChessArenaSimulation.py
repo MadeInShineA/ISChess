@@ -1,4 +1,5 @@
-
+import json
+import os
 
 from PyQt6 import QtCore, QtWidgets, QtGui
 from PyQt6 import uic
@@ -16,8 +17,8 @@ class ChessAppSimulation(QtWidgets.QApplication):
     def __init__(self) -> object:
         super().__init__([])
 
-    def start(self, white_bot: str, black_bot: str, number_of_turns: int, time_per_turn: float):
-        arena = ChessArena(number_of_turns, time_per_turn)
+    def start(self, white_bot: str, black_bot: str, number_of_turns: int, time_per_turn: float, filepath: str):
+        arena = ChessArena(number_of_turns, time_per_turn, filepath)
         arena.show()
         arena.start()
         arena.launch_game(white_bot, black_bot)
@@ -30,7 +31,7 @@ CHESS_COLOR = {"w" : [QtGui.QColor(255,255,255), QtGui.QColor(0,0,0)], "b" : [Qt
 COLOR_NAMES = {"w" : "White", "b":"Black", "r":"Red", "y":"Yellow"}
 CHESS_PIECES_NAMES = {"k":"King", "q":"Queen", "n":"Knight", "b":"Bishop", "r":"Rook", "p":"Pawn"}
 class ChessArena(QtWidgets.QWidget):
-    def __init__(self, number_of_turns: int, time_per_turn: float):
+    def __init__(self, number_of_turns: int, time_per_turn: float, filepath):
         super().__init__()
 
         uic.loadUi("Data/UI.ui", self)
@@ -52,6 +53,25 @@ class ChessArena(QtWidgets.QWidget):
         self.number_of_turns: int = number_of_turns
 
         self.time_per_turn: float = time_per_turn
+
+        self.filepath: str = filepath
+
+    def write_to_file(self, data: dict[str, str]):
+        if not self.filepath:
+            return
+
+        existing_data = []
+        if os.path.exists(self.filepath) and os.path.getsize(self.filepath) > 0:
+            with open(self.filepath, 'r') as file:
+                try:
+                    existing_data = json.load(file)
+                except json.JSONDecodeError:
+                    existing_data = []
+
+        existing_data.append(data)
+        with open(self.filepath, 'w') as file:
+            json.dump(existing_data, file, indent=4)
+        file.close()
 
     def add_system_message(self, message):
         msg_widget = QtWidgets.QLabel(message)
@@ -111,6 +131,8 @@ class ChessArena(QtWidgets.QWidget):
             player_color = self.current_player.color
 
             next_play = self.current_player.next_move
+
+            self.write_to_file({"type": "move", "start": str(next_play[0]), "end": str(next_play[1])})
 
             if not move_is_valid(self.player_order, next_play, self.current_player.board):
                 self.add_system_message(COLOR_NAMES[player_color] + " invalid move from " + str(next_play[0]) + " to " + str(next_play[1]))
