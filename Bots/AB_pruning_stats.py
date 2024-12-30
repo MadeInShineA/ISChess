@@ -70,14 +70,22 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
     best_move: Move = Move((0, 0), (0, 0))
     number_of_evaluation: int = 0
     number_of_branches_cut: int = 0
+    is_timeout: bool = False
     try:
         find_best_move_with_alpha_beta(chess_board, 3, player_sequence[1])
     except TimeExceededException:
-        pass
+       is_timeout = True 
     finally:
         elapsed_time = time.time() - start_time
         print(f"Number of evaluation: {number_of_evaluation} in {elapsed_time}")
         print(f"Number of branches cut: {number_of_branches_cut}")
 
-        return best_move.start, best_move.end
+        stats: dict[str, str | int | float | bool] = {
+            "bot": "prunning_stats",
+            "number_of_evaluation": number_of_evaluation,
+            "number_of_branches_cut": number_of_branches_cut,
+            "elapsed_time": elapsed_time,
+            "is_timeout": is_timeout
+        }
+        return (best_move.start, best_move.end), stats
 register_chess_bot("prunning_stats", chess_bot)

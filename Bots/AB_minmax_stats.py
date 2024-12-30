@@ -50,13 +50,20 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
 
     best_move = Move((0, 0), (0, 0))
     number_of_evaluation: int = 0
+    is_timeout: bool = False
     try:
         find_best_move(chess_board, 3, player_sequence[1])
     except TimeExceededException:
-        pass
+       is_timeout = True 
     finally:
         elapsed_time = time.time() - start_time
         print(f"Number of evaluation: {number_of_evaluation} in {elapsed_time}")
-        return best_move.start, best_move.end
+        stats: dict[str, str | int | float | bool] = {
+            "bot": "minmax_stats",
+            "number_of_evaluation": number_of_evaluation,
+            "elapsed_time": elapsed_time,
+            "is_timeout": is_timeout
+        }
+        return (best_move.start, best_move.end), stats
 
 register_chess_bot("minmax_stats", chess_bot)

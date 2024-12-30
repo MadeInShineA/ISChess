@@ -50,13 +50,15 @@ class ChessArena(QtWidgets.QWidget):
 
         self.current_player = None
 
+        self.initial_number_of_turns: int = number_of_turns
+
         self.number_of_turns: int = number_of_turns
 
         self.time_per_turn: float = time_per_turn
 
         self.filepath: str = filepath
 
-    def write_to_file(self, data: dict[str, str]):
+    def write_to_file(self, data: dict[str, str | int | float]):
         if not self.filepath:
             return
 
@@ -130,9 +132,10 @@ class ChessArena(QtWidgets.QWidget):
 
             player_color = self.current_player.color
 
-            next_play = self.current_player.next_move
+            next_play, stats = self.current_player.next_move
 
-            self.write_to_file({"type": "move", "start": str(next_play[0]), "end": str(next_play[1])})
+            stats["turn_number"] = self.initial_number_of_turns - self.number_of_turns + 1
+            self.write_to_file(stats)
 
             if not move_is_valid(self.player_order, next_play, self.current_player.board):
                 self.add_system_message(COLOR_NAMES[player_color] + " invalid move from " + str(next_play[0]) + " to " + str(next_play[1]))
