@@ -107,7 +107,6 @@ class Pawn(ChessPiece):
     ]
 
     board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
     @override
     def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top: str) -> Generator[Move, None, None]:
