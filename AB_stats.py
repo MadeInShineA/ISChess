@@ -9,18 +9,19 @@ from ChessArenaSimulation import ChessArena, ChessAppSimulation
 
 def simulate_game(white_bot: str, black_bot: str, number_of_turns: int, time_per_turn: float, filepath: str = ""):
 
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, 'w') as file:
-        stats = {
-            "type": "game_infos",
-            "white_bot": white_bot,
-            "black_bot": black_bot,
-            "number_of_turns": number_of_turns,
-            "time_per_turn": time_per_turn
-        }
-        json.dump([stats], file, indent=4)
+    if filepath:
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, 'w') as file:
+            stats = {
+                "type": "game_infos",
+                "white_bot": white_bot,
+                "black_bot": black_bot,
+                "number_of_turns": number_of_turns,
+                "time_per_turn": time_per_turn
+            }
+            json.dump([stats], file, indent=4)
 
-    file.close()
+        file.close()
 
     app = ChessAppSimulation()
     app.start(white_bot, black_bot, number_of_turns, time_per_turn, filepath)
@@ -29,8 +30,7 @@ if __name__ == '__main__':
     args: list[str] = sys.argv
 
     if len(args) == 1:
-        for i in range(5):
-            simulate_game("minmax_stats", "prunning_stats", 5, 2)
+        simulate_game("minmax_stats", "random_stats", 5, 2)
     elif len(args) == 6:
         white_bot, black_bot, number_of_turns, time_per_turn, numer_of_iterations = args[1:]
         for i in range(int(numer_of_iterations)):
