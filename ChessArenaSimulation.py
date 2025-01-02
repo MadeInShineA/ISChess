@@ -145,6 +145,7 @@ class ChessArena(QtWidgets.QWidget):
 
             if not move_is_valid(self.player_order, next_play, self.current_player.board):
                 self.add_system_message(COLOR_NAMES[player_color] + " invalid move from " + str(next_play[0]) + " to " + str(next_play[1]))
+                self.end_game(None, is_stalemate = True)
                 return
 
             self.add_system_message(COLOR_NAMES[player_color] + " moved " + CHESS_PIECES_NAMES[self.current_player.board[next_play[0][0], next_play[0][1]][0]] +
@@ -182,7 +183,7 @@ class ChessArena(QtWidgets.QWidget):
             self.play_next_turn()
 
 
-    def end_game(self, winner):
+    def end_game(self, winner, is_stalemate: bool = False):
 
         white_pieces_counter: int = 0
         black_pieces_counter: int = 0
@@ -196,28 +197,23 @@ class ChessArena(QtWidgets.QWidget):
                         black_pieces_counter += 1
 
 
+        winner_bot: None | str = None
         if winner is None:
             if white_pieces_counter == black_pieces_counter:
-                self.add_system_message("# Match ended in a draw")
-                self.write_to_file({"type": "end_game_stat", "winner": "none", "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": False})
+                winner_bot = "none"
             else:
                 if white_pieces_counter > black_pieces_counter:
-                    self.add_system_message(f"White won with {white_pieces_counter} pieces")
-                    self.write_to_file({"type": "end_game_stat", "winner": self.white_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": False})
+                    winner_bot = self.white_bot
                 else:
-                    self.add_system_message(f"Black won with {black_pieces_counter} pieces")
-                    self.write_to_file({"type": "end_game_stat", "winner": self.black_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": False})
+                    winner_bot = self.black_bot
         else:
-            self.add_system_message("# " + str(COLOR_NAMES[winner]) + " won the match")
 
-            winner_bot: str | None = None
             if winner == 'w':
                 winner_bot = self.white_bot
             else:
                 winner_bot = self.black_bot
             
-            self.write_to_file({"type": "end_game_stat", "winner": winner_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": True})
-
+        self.write_to_file({"type": "end_game_stat", "winner": winner_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": is_checkmate, "stalemate": is_stalemate})
         self.close()
 
     def select_and_load_board(self):
