@@ -200,7 +200,7 @@ class ChessArena(QtWidgets.QWidget):
         winner_bot: None | str = None
         is_checkmate: bool = False
         if winner is None:
-            if white_pieces_counter == black_pieces_counter:
+            if white_pieces_counter == black_pieces_counter or is_stalemate:
                 winner_bot = "none"
             else:
                 if white_pieces_counter > black_pieces_counter:
