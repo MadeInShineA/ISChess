@@ -35,7 +35,11 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
             "elapsed_time": elapsed_time,
             "is_timeout": is_timeout
         }
-        selected_move = random.choice(possible_moves)
+        if possible_moves:
+            selected_move = random.choice(possible_moves)
+
+        else:
+            selected_move = Move((0, 0), (0, 0))
         return (selected_move.start, selected_move.end), stats
 
 register_chess_bot("random_stats", chess_bot)
