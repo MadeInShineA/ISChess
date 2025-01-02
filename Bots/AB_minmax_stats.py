@@ -39,16 +39,19 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
         opponent_color: str = 'w' if color == 'b' else 'b'
         best_value = float('-inf')
         nonlocal best_move
+        nonlocal board_after_move
 
         for new_board, move in board_class.get_possible_boards(board, color):
             value = evaluate_minmax(new_board, depth - 1, opponent_color, False)
             if value > best_value:
                 best_value = value
                 best_move = move
+                board_after_move = new_board
 
         return best_move
 
     best_move = Move((0, 0), (0, 0))
+    board_after_move: ChessBoard = chess_board
     number_of_evaluation: int = 0
     is_timeout: bool = False
     depth = 3
@@ -61,6 +64,8 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
         print(f"Number of evaluation: {number_of_evaluation} in {elapsed_time}")
         stats: dict[str, str | int | float | bool] = {
             "bot": "minmax_stats",
+            "board_before_move": board_class.encode_to_fen(chess_board),
+            "board_after_move": board_class.encode_to_fen(board_after_move),
             "number_of_evaluation": number_of_evaluation,
             "depth": depth,
             "elapsed_time": elapsed_time,

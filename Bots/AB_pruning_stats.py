@@ -52,6 +52,7 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
 
     def find_best_move_with_alpha_beta(board: ChessBoard, depth: int, color: str) -> Move:
         nonlocal best_move
+        nonlocal board_after_move
         opponent_color: str = 'w' if color == 'b' else 'b'
         best_value = float('-inf')
         alpha = float('-inf')
@@ -62,12 +63,14 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
             if value > best_value:
                 best_value = value
                 best_move = move
+                board_after_move = new_board
             alpha = max(alpha, value)
 
         return best_move
 
 
     best_move: Move = Move((0, 0), (0, 0))
+    board_after_move: ChessBoard = chess_board
     number_of_evaluation: int = 0
     number_of_branches_cut: int = 0
     is_timeout: bool = False
@@ -83,6 +86,9 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
 
         stats: dict[str, str | int | float | bool] = {
             "bot": "prunning_stats",
+            "board_before_move": board_class.encode_to_fen(chess_board),
+            "board_after_move": board_class.encode_to_fen(board_after_move),
+
             "number_of_evaluation": number_of_evaluation,
             "number_of_branches_cut": number_of_branches_cut,
             "depth": depth,
