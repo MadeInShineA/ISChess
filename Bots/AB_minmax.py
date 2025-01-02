@@ -54,4 +54,4 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
     finally:
         return best_move.start, best_move.end
 
-register_chess_bot("AB_BOT", chess_bot)
+register_chess_bot("AB_minmax", chess_bot)

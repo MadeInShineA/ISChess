@@ -37,4 +37,5 @@ if __name__ == '__main__':
             game_uuid: str  = str(uuid.uuid4())
             filepath: str = f"game_stats/{white_bot}_{black_bot}/{number_of_turns}_{time_per_turn}_{game_uuid}.json"
             simulate_game(white_bot, black_bot, int(number_of_turns), float(time_per_turn), filepath)
+            sys.stderr.write(f"Game finished with success: {filepath}")
 

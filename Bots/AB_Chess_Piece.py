@@ -18,7 +18,10 @@ class ChessPiece:
         for possible_move in self.get_possible_moves(board, x_position, y_position, color, color_on_top):
             new_board = ChessBoard(copy.deepcopy(board.board))
             new_board.board[possible_move.start[0]][possible_move.start[1]] = ''
-            new_board.board[possible_move.end[0]][possible_move.end[1]] = self.piece_name + color
+            if possible_move.promotion:
+                new_board.board[possible_move.end[0]][possible_move.end[1]] = 'q'+ color
+            else:
+                new_board.board[possible_move.end[0]][possible_move.end[1]] = self.piece_name + color
             yield new_board, possible_move
 
     def get_current_value(self, x_position: int, y_position: int) -> int:
@@ -112,6 +115,7 @@ class Pawn(ChessPiece):
     def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top: str) -> Generator[Move, None, None]:
 
         direction: int = 1 if color == color_on_top else -1
+        promotion_row: int = 0 if direction == -1 else len(board.board) - 1
 
         # Regular moves
         for move in self.possible_moves:
@@ -121,7 +125,10 @@ class Pawn(ChessPiece):
             if x < 0 or x >= len(board.board) or y < 0 or y >= len(board.board[0]):
                 continue
             if board.board[y][x] == '':
-                yield Move((y_position, x_position), (y, x))
+                if y == promotion_row:
+                    yield Move((y_position, x_position), (y, x), promotion=True)
+                else:
+                    yield Move((y_position, x_position), (y, x))
 
         # Account for the possible eating moves
         for move in [(1, 1), (-1, 1)]:
@@ -131,7 +138,10 @@ class Pawn(ChessPiece):
             if x < 0 or x >= len(board.board) or y < 0 or y >= len(board.board[0]):
                 continue
             if board.board[y][x] != '' and board.board[y][x][1] != color:
-                yield Move((y_position, x_position), (y, x))
+                if y == promotion_row:
+                    yield Move((y_position, x_position), (y, x), promotion=True)
+                else:
+                    yield Move((y_position, x_position), (y, x))
 class Rock(SlidingPiece):
     piece_name = 'r'
     piece_value = 500

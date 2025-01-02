@@ -11,7 +11,7 @@ fn run_python_script(thread_id: usize, arguments: &[String; 5]) {
         .arg("AB_stats.py") // Use correct path to the script
         .args(arguments)
         .current_dir("../") // Set the working directory
-        .stdout(Stdio::inherit()) // Forward stdout
+        .stdout(Stdio::null()) // Forward stdout
         .stderr(Stdio::inherit()) // Forward stderr
         .status(); // Execute command
 
@@ -41,10 +41,8 @@ fn main() {
     let number_of_iterations: String = args[2].clone();
 
     let bot_options = ["minmax_stats", "prunning_stats", "random_stats"];
-    let number_of_turns_option: Vec<String> = (10..=150)
-    .step_by(10)
-    .map(|n| n.to_string())
-    .collect();
+    let number_of_turns_option: Vec<String> =
+        (10..=150).step_by(10).map(|n| n.to_string()).collect();
 
     let time_per_turn_options = ["0.5", "1.0", "1.5", "2.0"];
 
@@ -54,7 +52,7 @@ fn main() {
         let mut white_bot: String = bot_options.choose(&mut rng).unwrap().to_string();
         let mut black_bot: String = bot_options.choose(&mut rng).unwrap().to_string();
 
-         while white_bot == "random_stats" && black_bot == "random_stats" {
+        while white_bot == "random_stats" && black_bot == "random_stats" {
             if rng.gen_bool(0.5) {
                 white_bot = bot_options.choose(&mut rng).unwrap().to_string();
             } else {
@@ -66,7 +64,13 @@ fn main() {
         let time_per_turn: String = time_per_turn_options.choose(&mut rng).unwrap().to_string();
 
         let iterations: String = number_of_iterations.clone();
-        let options: [String; 5] = [white_bot, black_bot, number_of_turns, time_per_turn, iterations];
+        let options: [String; 5] = [
+            white_bot,
+            black_bot,
+            number_of_turns,
+            time_per_turn,
+            iterations,
+        ];
         let handle = thread::spawn(move || {
             run_python_script(i, &options);
         });
