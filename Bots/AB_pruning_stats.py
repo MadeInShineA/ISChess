@@ -71,8 +71,9 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
     number_of_evaluation: int = 0
     number_of_branches_cut: int = 0
     is_timeout: bool = False
+    depth = 3
     try:
-        find_best_move_with_alpha_beta(chess_board, 3, player_sequence[1])
+        find_best_move_with_alpha_beta(chess_board, depth, player_sequence[1])
     except TimeExceededException:
        is_timeout = True 
     finally:
@@ -84,6 +85,7 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
             "bot": "prunning_stats",
             "number_of_evaluation": number_of_evaluation,
             "number_of_branches_cut": number_of_branches_cut,
+            "depth": depth,
             "elapsed_time": elapsed_time,
             "is_timeout": is_timeout
         }

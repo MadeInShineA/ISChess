@@ -51,8 +51,9 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
     best_move = Move((0, 0), (0, 0))
     number_of_evaluation: int = 0
     is_timeout: bool = False
+    depth = 3
     try:
-        find_best_move(chess_board, 3, player_sequence[1])
+        find_best_move(chess_board, depth, player_sequence[1])
     except TimeExceededException:
        is_timeout = True 
     finally:
@@ -61,6 +62,7 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
         stats: dict[str, str | int | float | bool] = {
             "bot": "minmax_stats",
             "number_of_evaluation": number_of_evaluation,
+            "depth": depth,
             "elapsed_time": elapsed_time,
             "is_timeout": is_timeout
         }
