@@ -54,9 +54,9 @@ class ChessArena(QtWidgets.QWidget):
         
         self.black_bot: str = black_bot
 
-        self.initial_number_of_turns: int = number_of_turns
-
         self.number_of_turns: int = number_of_turns
+
+        self.turn_number: int = 0
 
         self.time_per_turn: float = time_per_turn
 
@@ -109,7 +109,7 @@ class ChessArena(QtWidgets.QWidget):
             print("Cannot launch new turn while already processing")
             return
 
-        if self.number_of_turns == 0:
+        if self.turn_number == self.number_of_turns:
             print("No more play to do")
             self.end_game(None)
             return
@@ -122,6 +122,7 @@ class ChessArena(QtWidgets.QWidget):
         self.current_player.setTerminationEnabled(True)
         self.current_player.start()
 
+        self.turn_number += 1
         #   Timer to call
         QtCore.QTimer.singleShot(int(self.time_per_turn * 1000 * 1.05), self.end_turn)
 
@@ -139,7 +140,7 @@ class ChessArena(QtWidgets.QWidget):
             next_play, stats = self.current_player.next_move
 
             stats["type"] = "turn_stat"
-            stats["turn_number"] = self.initial_number_of_turns - self.number_of_turns + 1
+            stats["turn_number"] = self.turn_number
             self.write_to_file(stats)
 
             if not move_is_valid(self.player_order, next_play, self.current_player.board):
@@ -174,7 +175,6 @@ class ChessArena(QtWidgets.QWidget):
 
         #   Current player goes at the end of the play queue
         self.player_order = self.player_order[3:] + self.player_order[0:3]
-        self.number_of_turns -= 1
 
         if all_other_defeated:
             self.end_game(player_color)
@@ -199,14 +199,14 @@ class ChessArena(QtWidgets.QWidget):
         if winner is None:
             if white_pieces_counter == black_pieces_counter:
                 self.add_system_message("# Match ended in a draw")
-                self.write_to_file({"type": "end_game_stat", "winner": "none", "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.initial_number_of_turns - self.number_of_turns + 1, "checkmate": False})
+                self.write_to_file({"type": "end_game_stat", "winner": "none", "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": False})
             else:
                 if white_pieces_counter > black_pieces_counter:
                     self.add_system_message(f"White won with {white_pieces_counter} pieces")
-                    self.write_to_file({"type": "end_game_stat", "winner": self.white_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.initial_number_of_turns - self.number_of_turns, "checkmate": False})
+                    self.write_to_file({"type": "end_game_stat", "winner": self.white_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": False})
                 else:
                     self.add_system_message(f"Black won with {black_pieces_counter} pieces")
-                    self.write_to_file({"type": "end_game_stat", "winner": self.black_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.initial_number_of_turns - self.number_of_turns, "checkmate": False})
+                    self.write_to_file({"type": "end_game_stat", "winner": self.black_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": False})
         else:
             self.add_system_message("# " + str(COLOR_NAMES[winner]) + " won the match")
 
@@ -216,7 +216,7 @@ class ChessArena(QtWidgets.QWidget):
             else:
                 winner_bot = self.black_bot
             
-            self.write_to_file({"type": "end_game_stat", "winner": winner_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.initial_number_of_turns - self.number_of_turns, "checkmate": True})
+            self.write_to_file({"type": "end_game_stat", "winner": winner_bot, "white_pieces": white_pieces_counter, "black_pieces": black_pieces_counter, "number_of_turns" : self.turn_number, "checkmate": True})
 
         self.close()
 

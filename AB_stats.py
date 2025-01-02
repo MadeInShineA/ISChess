@@ -11,7 +11,14 @@ def simulate_game(white_bot: str, black_bot: str, number_of_turns: int, time_per
 
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     with open(filepath, 'w') as file:
-        json.dump([], file, indent=4)
+        stats = {
+            "type": "game_infos",
+            "white_bot": white_bot,
+            "black_bot": black_bot,
+            "number_of_turns": number_of_turns,
+            "time_per_turn": time_per_turn
+        }
+        json.dump([stats], file, indent=4)
 
     file.close()
 
@@ -24,9 +31,10 @@ if __name__ == '__main__':
     if len(args) == 1:
         for i in range(5):
             simulate_game("minmax_stats", "prunning_stats", 5, 2)
-    elif len(args) == 5:
-        white_bot, black_bot, number_of_turns, time_per_turn = args[1:]
-        uuid: str  = str(uuid.uuid4())
-        filepath: str = f"game_stats/{white_bot}_{black_bot}/{number_of_turns}_{time_per_turn}_{uuid}.json"
-        simulate_game(white_bot, black_bot, int(number_of_turns), float(time_per_turn), filepath)
+    elif len(args) == 6:
+        white_bot, black_bot, number_of_turns, time_per_turn, numer_of_itterations = args[1:]
+        for i in range(int(numer_of_itterations)):
+            game_uuid: str  = str(uuid.uuid4())
+            filepath: str = f"game_stats/{white_bot}_{black_bot}/{number_of_turns}_{time_per_turn}_{game_uuid}.json"
+            simulate_game(white_bot, black_bot, int(number_of_turns), float(time_per_turn), filepath)
 
