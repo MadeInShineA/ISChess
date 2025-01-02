@@ -198,6 +198,7 @@ class ChessArena(QtWidgets.QWidget):
 
 
         winner_bot: None | str = None
+        is_checkmate: bool = False
         if winner is None:
             if white_pieces_counter == black_pieces_counter:
                 winner_bot = "none"
@@ -207,7 +208,7 @@ class ChessArena(QtWidgets.QWidget):
                 else:
                     winner_bot = self.black_bot
         else:
-
+            is_checkmate = True
             if winner == 'w':
                 winner_bot = self.white_bot
             else:
