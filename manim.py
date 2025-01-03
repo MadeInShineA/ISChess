@@ -91,7 +91,7 @@ class DFS(Scene):
         self.play(Create(manim_graph))
         self.wait()
 
-class MinMaxTree(Scene):
+class MinMax(Scene):
     def construct(self):
 
         self.camera.background_color = GRAY_A
@@ -110,7 +110,7 @@ class MinMaxTree(Scene):
         def dfs(vertex, parent):
             visited.append((vertex, parent))
             for neighbor in graph_dict[vertex]:
-                if (neighbor, vertex) not in visited:
+                if neighbor not in visited:
                     dfs(neighbor, vertex)
 
         dfs("2_depth_0", None)
@@ -132,42 +132,52 @@ class MinMaxTree(Scene):
             } for vertex in vertices
         }
 
-        graphs = []
+        labels = {v: Text("?", color=vertex_config[v]["label_color"]) for v in vertex_config}
 
-        for i in range(1, len(visited)):
-            vertices = [node for node, parent in visited[:i]]
-            edges = [(parent, node) for node, parent in visited[:i] if parent is not None]
+        manim_graph = DiGraph(
+            vertices,
+            edges=edges[::-1],
+            layout="tree",
+            root_vertex="2_depth_0",
+            vertex_config={
+                v: {"fill_color": vertex_config[v]["fill_color"]}
+                for v in vertex_config
+            },
+            labels=labels
+        )
+
+        def all_descendants_added(vertice, added_vertices, graph_dict):
+            children = graph_dict[vertice]
+            if not children:
+                return True
+            return all(child in added_vertices and all_descendants_added(child, added_vertices, graph_dict) for child in children)
+
+        def change_label_to_value(vertice):
+            old_label = labels[vertice]
+
+            new_label = Text(vertex_config[vertice]["label"], color=vertex_config[vertice]["label_color"])
+            new_label.move_to(manim_graph[vertice].get_center())
+            labels[vertice] = new_label
+            self.play(Transform(old_label, new_label))
+
+
+        added_vertices = set()
+
+        for vertice, parent in visited:
+            if parent:
+                self.play(Create(manim_graph.edges[(parent, vertice)][0]))
+                self.wait(0.2)
+            self.play(Create(manim_graph.vertices[vertice][0]))
+            self.wait(0.5)
             
-            print("====")
-            print(vertices)
-            print(edges)
+            added_vertices.add(vertice)
 
-            vertex_config = {
-                vertex: {
-                    "fill_color": vertices_colors[vertex],
-                    "label": vertices_labels[vertex],
-                    "label_color": "WHITE" if vertices_colors[vertex] == "BLACK" else "BLACK"
-                } for vertex in vertices
-            }
+            if not graph_dict[vertice]:
+                change_label_to_value(vertice)
 
-            graph = DiGraph(
-                vertices,
-                edges,
-                layout="tree",
-                root_vertex="2_depth_0",
-                vertex_config={
-                    v: {"fill_color": vertex_config[v]["fill_color"]}
-                    for v in vertex_config
-                },
-                labels={v: Text(vertex_config[v]["label"], color=vertex_config[v]["label_color"]) for v in vertex_config}
-            )
-
-            graphs.append(graph)
-
-        self.play(Create(graphs[0]))
-        for i in range(1, len(graphs)):
-            print(graphs[i])
-
-            self.play(Transform(graphs[i - 1], graphs[i]))
-            self.wait()
+    
+            if parent and all_descendants_added(parent, added_vertices, graph_dict):
+                change_label_to_value(parent)
+ 
+        change_label_to_value("2_depth_0")
         self.wait()
