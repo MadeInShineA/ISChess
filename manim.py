@@ -97,9 +97,9 @@ class MinMax(Scene):
         self.camera.background_color = GRAY_A
 
         graph_dict = {
-            "2_depth_0": ["2_depth_1", "-2_depth_1"],  # Use list instead of set
+            "2_depth_0": ["2_depth_1", "-4_depth_1"],  # Use list instead of set
             "2_depth_1": ["4_depth_2", "2_depth_2"],
-            "-2_depth_1": ["-4_depth_2", "-2_depth_2"],
+            "-4_depth_1": ["-4_depth_2", "-2_depth_2"],
             "4_depth_2": [],
             "2_depth_2": [],
             "-2_depth_2": [],
