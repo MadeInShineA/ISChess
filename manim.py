@@ -168,7 +168,7 @@ class MinMax(Scene):
                 self.play(Create(manim_graph.edges[(parent, vertice)][0]))
                 self.wait(0.2)
             self.play(Create(manim_graph.vertices[vertice][0]))
-            self.wait(0.5)
+            self.wait(0.2)
             
             added_vertices.add(vertice)
 
