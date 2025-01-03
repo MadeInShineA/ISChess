@@ -85,7 +85,7 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
         print(f"Number of branches cut: {number_of_branches_cut}")
 
         stats: dict[str, str | int | float | bool] = {
-            "bot": "prunning_stats",
+            "bot": "pruning_stats",
             "board_before_move": board_class.encode_to_fen(chess_board),
             "board_after_move": board_class.encode_to_fen(board_after_move),
 
@@ -96,4 +96,4 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
             "is_timeout": is_timeout
         }
         return (best_move.start, best_move.end), stats
-register_chess_bot("prunning_stats", chess_bot)
+register_chess_bot("pruning_stats", chess_bot)

@@ -40,7 +40,7 @@ fn main() {
     let number_of_threads: usize = args[1].parse().expect("Invalid number of threads number");
     let number_of_iterations: String = args[2].clone();
 
-    let bot_options = ["minmax_stats", "prunning_stats", "random_stats"];
+    let bot_options = ["minmax_stats", "pruning_stats", "random_stats"];
     let number_of_turns_option: Vec<String> =
         (10..=150).step_by(10).map(|n| n.to_string()).collect();
 
