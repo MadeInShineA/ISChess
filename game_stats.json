@@ -1,0 +1,601 @@
+{
+    "total_number_of_games": 1640,
+    "white_minmax_stats vs black_minmax_stats": {
+        "black_minmax_stats": {
+            "timeouts": {
+                "0.5": 2298,
+                "1.0": 1634,
+                "1.5": 221,
+                "2.0": 137,
+                "total": 4290
+            },
+            "total_number_of_evaluations": 95018593,
+            "total_number_of_timeouts": 4303,
+            "total_time_spent_computing": 5108.350494861603
+        },
+        "black_minmax_stats_wins": {
+            "0.5": {
+                "checkmate": 1,
+                "pieces": 17
+            },
+            "1.0": {
+                "checkmate": 4,
+                "pieces": 75
+            },
+            "1.5": {
+                "checkmate": 3,
+                "pieces": 9
+            },
+            "2.0": {
+                "checkmate": 6,
+                "pieces": 20
+            },
+            "total": 135
+        },
+        "draws": {
+            "0.5": {
+                "pieces": 32,
+                "stalemate": 45
+            },
+            "1.0": {
+                "pieces": 41,
+                "stalemate": 2
+            },
+            "1.5": {
+                "pieces": 18,
+                "stalemate": 2
+            },
+            "2.0": {
+                "pieces": 9,
+                "stalemate": 0
+            },
+            "total": 149
+        },
+        "number_of_games": 310,
+        "total_number_of_turns": 13850,
+        "white_minmax_stats": {
+            "timeouts": {
+                "0.5": 2291,
+                "1.0": 1645,
+                "1.5": 228,
+                "2.0": 182,
+                "total": 4346
+            },
+            "total_number_of_evaluations": 96204382,
+            "total_number_of_timeouts": 4349,
+            "total_time_spent_computing": 5131.943484306335
+        },
+        "white_minmax_stats_wins": {
+            "0.5": {
+                "checkmate": 4,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 9,
+                "pieces": 0
+            },
+            "1.5": {
+                "checkmate": 8,
+                "pieces": 0
+            },
+            "2.0": {
+                "checkmate": 5,
+                "pieces": 0
+            },
+            "total": 26
+        }
+    },
+    "white_minmax_stats vs black_pruning_stats": {
+        "black_pruning_stats": {
+            "timeouts": {
+                "0.5": 1031,
+                "1.0": 986,
+                "1.5": 161,
+                "2.0": 42,
+                "total": 2220
+            },
+            "total_number_of_branches_cut": 799573,
+            "total_number_of_evaluations": 22619705,
+            "total_number_of_timeouts": 2222,
+            "total_time_spent_computing": 2915.4674496650696
+        },
+        "black_pruning_stats_wins": {
+            "0.5": {
+                "checkmate": 9,
+                "pieces": 16
+            },
+            "1.0": {
+                "checkmate": 3,
+                "pieces": 36
+            },
+            "1.5": {
+                "checkmate": 12,
+                "pieces": 12
+            },
+            "2.0": {
+                "checkmate": 4,
+                "pieces": 5
+            },
+            "total": 97
+        },
+        "draws": {
+            "0.5": {
+                "pieces": 14,
+                "stalemate": 1
+            },
+            "1.0": {
+                "pieces": 14,
+                "stalemate": 0
+            },
+            "1.5": {
+                "pieces": 11,
+                "stalemate": 0
+            },
+            "2.0": {
+                "pieces": 5,
+                "stalemate": 0
+            },
+            "total": 45
+        },
+        "number_of_games": 155,
+        "total_number_of_turns": 8644,
+        "white_minmax_stats": {
+            "timeouts": {
+                "0.5": 1294,
+                "1.0": 1271,
+                "1.5": 547,
+                "2.0": 128,
+                "total": 3240
+            },
+            "total_number_of_evaluations": 42356679,
+            "total_number_of_timeouts": 3261,
+            "total_time_spent_computing": 3825.7763965129852
+        },
+        "white_minmax_stats_wins": {
+            "0.5": {
+                "checkmate": 1,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "1.5": {
+                "checkmate": 2,
+                "pieces": 0
+            },
+            "2.0": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "total": 3
+        }
+    },
+    "white_minmax_stats vs black_random_stats": {
+        "black_random_stats": {
+            "timeouts": {
+                "0.5": 0,
+                "1.0": 0,
+                "1.5": 0,
+                "2.0": 0,
+                "total": 0
+            },
+            "total_number_of_timeouts": 0,
+            "total_time_spent_computing": 6.8071229457855225
+        },
+        "black_random_stats_wins": {
+            "0.5": {
+                "checkmate": 2,
+                "pieces": 5
+            },
+            "1.0": {
+                "checkmate": 2,
+                "pieces": 9
+            },
+            "1.5": {
+                "checkmate": 1,
+                "pieces": 8
+            },
+            "2.0": {
+                "checkmate": 0,
+                "pieces": 1
+            },
+            "total": 28
+        },
+        "draws": {
+            "0.5": {
+                "pieces": 8,
+                "stalemate": 0
+            },
+            "1.0": {
+                "pieces": 16,
+                "stalemate": 0
+            },
+            "1.5": {
+                "pieces": 3,
+                "stalemate": 0
+            },
+            "2.0": {
+                "pieces": 3,
+                "stalemate": 0
+            },
+            "total": 30
+        },
+        "number_of_games": 260,
+        "total_number_of_turns": 8869,
+        "white_minmax_stats": {
+            "timeouts": {
+                "0.5": 619,
+                "1.0": 1084,
+                "1.5": 1234,
+                "2.0": 62,
+                "total": 2999
+            },
+            "total_number_of_evaluations": 55650174,
+            "total_number_of_timeouts": 3008,
+            "total_time_spent_computing": 4546.0723469257355
+        },
+        "white_minmax_stats_wins": {
+            "0.5": {
+                "checkmate": 1,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 8,
+                "pieces": 0
+            },
+            "1.5": {
+                "checkmate": 157,
+                "pieces": 0
+            },
+            "2.0": {
+                "checkmate": 1,
+                "pieces": 0
+            },
+            "total": 167
+        }
+    },
+    "white_pruning_stats vs black_minmax_stats": {
+        "black_minmax_stats": {
+            "timeouts": {
+                "0.5": 3276,
+                "1.0": 268,
+                "1.5": 398,
+                "2.0": 628,
+                "total": 4570
+            },
+            "total_number_of_evaluations": 47078813,
+            "total_number_of_timeouts": 4594,
+            "total_time_spent_computing": 4449.6142501831055
+        },
+        "black_minmax_stats_wins": {
+            "0.5": {
+                "checkmate": 1,
+                "pieces": 3
+            },
+            "1.0": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "1.5": {
+                "checkmate": 0,
+                "pieces": 3
+            },
+            "2.0": {
+                "checkmate": 2,
+                "pieces": 3
+            },
+            "total": 12
+        },
+        "draws": {
+            "0.5": {
+                "pieces": 23,
+                "stalemate": 2
+            },
+            "1.0": {
+                "pieces": 5,
+                "stalemate": 1
+            },
+            "1.5": {
+                "pieces": 6,
+                "stalemate": 1
+            },
+            "2.0": {
+                "pieces": 17,
+                "stalemate": 0
+            },
+            "total": 55
+        },
+        "number_of_games": 185,
+        "total_number_of_turns": 10850,
+        "white_pruning_stats": {
+            "timeouts": {
+                "0.5": 2451,
+                "1.0": 200,
+                "1.5": 249,
+                "2.0": 220,
+                "total": 3120
+            },
+            "total_number_of_branches_cut": 953078,
+            "total_number_of_evaluations": 28086383,
+            "total_number_of_timeouts": 3120,
+            "total_time_spent_computing": 3494.306428670883
+        },
+        "white_pruning_stats_wins": {
+            "0.5": {
+                "checkmate": 13,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 2,
+                "pieces": 0
+            },
+            "1.5": {
+                "checkmate": 2,
+                "pieces": 0
+            },
+            "2.0": {
+                "checkmate": 10,
+                "pieces": 0
+            },
+            "total": 27
+        }
+    },
+    "white_pruning_stats vs black_pruning_stats": {
+        "black_pruning_stats": {
+            "timeouts": {
+                "1.0": 393,
+                "1.5": 53,
+                "total": 446
+            },
+            "total_number_of_branches_cut": 2507311,
+            "total_number_of_evaluations": 67177009,
+            "total_number_of_timeouts": 446,
+            "total_time_spent_computing": 4101.7647659778595
+        },
+        "black_pruning_stats_wins": {
+            "1.0": {
+                "checkmate": 31,
+                "pieces": 122
+            },
+            "1.5": {
+                "checkmate": 24,
+                "pieces": 16
+            },
+            "total": 193
+        },
+        "draws": {
+            "1.0": {
+                "pieces": 44,
+                "stalemate": 2
+            },
+            "1.5": {
+                "pieces": 1,
+                "stalemate": 7
+            },
+            "total": 54
+        },
+        "number_of_games": 300,
+        "total_number_of_turns": 20077,
+        "white_pruning_stats": {
+            "timeouts": {
+                "1.0": 417,
+                "1.5": 35,
+                "total": 452
+            },
+            "total_number_of_branches_cut": 2541828,
+            "total_number_of_evaluations": 67351689,
+            "total_number_of_timeouts": 454,
+            "total_time_spent_computing": 4112.437698364258
+        },
+        "white_pruning_stats_wins": {
+            "1.0": {
+                "checkmate": 26,
+                "pieces": 0
+            },
+            "1.5": {
+                "checkmate": 27,
+                "pieces": 0
+            },
+            "total": 53
+        }
+    },
+    "white_pruning_stats vs black_random_stats": {
+        "black_random_stats": {
+            "timeouts": {
+                "0.5": 0,
+                "1.0": 0,
+                "1.5": 0,
+                "total": 0
+            },
+            "total_number_of_timeouts": 0,
+            "total_time_spent_computing": 2.270927906036377
+        },
+        "black_random_stats_wins": {
+            "0.5": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "1.5": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "total": 0
+        },
+        "draws": {
+            "0.5": {
+                "pieces": 0,
+                "stalemate": 0
+            },
+            "1.0": {
+                "pieces": 0,
+                "stalemate": 0
+            },
+            "1.5": {
+                "pieces": 0,
+                "stalemate": 0
+            },
+            "total": 0
+        },
+        "number_of_games": 155,
+        "total_number_of_turns": 5370,
+        "white_pruning_stats": {
+            "timeouts": {
+                "0.5": 1121,
+                "1.0": 45,
+                "1.5": 25,
+                "total": 1191
+            },
+            "total_number_of_branches_cut": 452650,
+            "total_number_of_evaluations": 15751014,
+            "total_number_of_timeouts": 1191,
+            "total_time_spent_computing": 1206.2990424633026
+        },
+        "white_pruning_stats_wins": {
+            "0.5": {
+                "checkmate": 62,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 35,
+                "pieces": 0
+            },
+            "1.5": {
+                "checkmate": 41,
+                "pieces": 0
+            },
+            "total": 138
+        }
+    },
+    "white_random_stats vs black_minmax_stats": {
+        "black_minmax_stats": {
+            "timeouts": {
+                "0.5": 538,
+                "1.0": 83,
+                "2.0": 328,
+                "total": 949
+            },
+            "total_number_of_evaluations": 10982108,
+            "total_number_of_timeouts": 959,
+            "total_time_spent_computing": 1242.6143832206726
+        },
+        "black_minmax_stats_wins": {
+            "0.5": {
+                "checkmate": 3,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 0,
+                "pieces": 6
+            },
+            "2.0": {
+                "checkmate": 30,
+                "pieces": 0
+            },
+            "total": 39
+        },
+        "draws": {
+            "0.5": {
+                "pieces": 0,
+                "stalemate": 1
+            },
+            "1.0": {
+                "pieces": 3,
+                "stalemate": 0
+            },
+            "2.0": {
+                "pieces": 0,
+                "stalemate": 0
+            },
+            "total": 4
+        },
+        "number_of_games": 50,
+        "total_number_of_turns": 2326,
+        "white_random_stats": {
+            "timeouts": {
+                "0.5": 0,
+                "1.0": 0,
+                "2.0": 0,
+                "total": 0
+            },
+            "total_number_of_timeouts": 0,
+            "total_time_spent_computing": 2.5051991939544678
+        },
+        "white_random_stats_wins": {
+            "0.5": {
+                "checkmate": 2,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "2.0": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "total": 2
+        }
+    },
+    "white_random_stats vs black_pruning_stats": {
+        "black_pruning_stats": {
+            "timeouts": {
+                "0.5": 2102,
+                "1.0": 7,
+                "total": 2109
+            },
+            "total_number_of_branches_cut": 565321,
+            "total_number_of_evaluations": 19372287,
+            "total_number_of_timeouts": 2109,
+            "total_time_spent_computing": 1500.6536388397217
+        },
+        "black_pruning_stats_wins": {
+            "0.5": {
+                "checkmate": 107,
+                "pieces": 38
+            },
+            "1.0": {
+                "checkmate": 9,
+                "pieces": 37
+            },
+            "total": 191
+        },
+        "draws": {
+            "0.5": {
+                "pieces": 3,
+                "stalemate": 0
+            },
+            "1.0": {
+                "pieces": 29,
+                "stalemate": 0
+            },
+            "total": 32
+        },
+        "number_of_games": 225,
+        "total_number_of_turns": 7285,
+        "white_random_stats": {
+            "timeouts": {
+                "0.5": 0,
+                "1.0": 0,
+                "total": 0
+            },
+            "total_number_of_timeouts": 0,
+            "total_time_spent_computing": 3.239605665206909
+        },
+        "white_random_stats_wins": {
+            "0.5": {
+                "checkmate": 1,
+                "pieces": 0
+            },
+            "1.0": {
+                "checkmate": 0,
+                "pieces": 0
+            },
+            "total": 1
+        }
+    }
+}
