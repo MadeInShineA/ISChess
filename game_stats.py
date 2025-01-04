@@ -1,4 +1,5 @@
 import json
+import math
 import os
 
 def analyse_file(filepath: str) -> dict[str, dict[str, str | int | bool]]:
@@ -95,6 +96,7 @@ if __name__ == '__main__':
                 matchup_stats[matchup]["number_of_turns"][time_per_turn] += game_stats["number_of_turns"]
                 matchup_stats[matchup]["number_of_turns"]["total"] += game_stats["number_of_turns"]
 
+                
                 winner = game_stats["winner"]
 
                 matchup_stats[matchup][white_bot + "_wins"].setdefault("total", 0)
@@ -148,6 +150,15 @@ if __name__ == '__main__':
                     matchup_stats[matchup][bot]["time_spent_computing"]["total"] += metrics[bot]["total_time_spent_computing"]
                     matchup_stats[matchup][bot]["time_spent_computing"][time_per_turn] += metrics[bot]["total_time_spent_computing"]
 
+                    matchup_stats[matchup][bot].setdefault("turns_played", {"total": 0})
+
+                    matchup_stats[matchup][bot]["turns_played"].setdefault(time_per_turn, 0)
+
+                    turns_played = math.ceil(game_stats["number_of_turns"] / 2.0) if bot == white_bot else math.floor(game_stats["number_of_turns"]/ 2.0)
+                    matchup_stats[matchup][bot]["turns_played"][time_per_turn] += turns_played
+                    matchup_stats[matchup][bot]["turns_played"]["total"] += turns_played
+
+
                     
                     if "total_number_of_evaluations" in metrics[bot].keys():
                         matchup_stats[matchup][bot].setdefault("number_of_evaluations", {"total": 0})
@@ -175,15 +186,12 @@ if __name__ == '__main__':
 
 
     bots = ["random", "minmax", "pruning"]
+    wanted_times = ["0.5", "1.0", "1.5", "2.0"]
+    wanted_metrics = ["number_of_evaluations", "timeouts", "turns_played"]
+    wanted_results = {bot: {wanted_metric: {wanted_time: 0 for wanted_time in wanted_times} for wanted_metric in wanted_metrics} for bot in bots}
+    
 
     for bot in bots:
-        wanted_times = ["0.5", "1.0", "1.5", "2.0"]
-        wanted_metrics = ["number_of_evaluations", "timeouts", "moves"]
-        wanted_results = {wanted_metric: {wanted_time: 0 for wanted_time in wanted_times} for wanted_metric in wanted_metrics}
-        number_of_boards_evaluated = {wanted_time: 0 for wanted_time in wanted_times}
-        number_of_timeouts = {wanted_time: 0 for wanted_time in wanted_times}
-        number_of_moves = {wanted_time: 0 for wanted_time in wanted_times}
-
         for matchup in matchup_stats.values():
             if isinstance(matchup, dict):
                 for key, values in matchup.items():
@@ -198,9 +206,8 @@ if __name__ == '__main__':
                                     #print(metric)
                                     #print(time)
                                     #print("===")
-                                    wanted_results[metric][time] += values__
+                                    wanted_results[bot][metric][time] += values__
 
-        print(bot)
-        print(wanted_results)
-        print()
+    with open("bot_stats.json", "w") as file:
+        json.dump(wanted_results, file, sort_keys=True, indent=4)
 
