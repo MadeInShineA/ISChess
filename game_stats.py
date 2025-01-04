@@ -187,7 +187,7 @@ if __name__ == '__main__':
 
     bots = ["random", "minmax", "pruning"]
     wanted_times = ["0.5", "1.0", "1.5", "2.0"]
-    wanted_metrics = ["number_of_evaluations", "timeouts", "turns_played"]
+    wanted_metrics = ["number_of_evaluations", "timeouts", "turns_played", "number_of_games" ]
     wanted_results = {bot: {wanted_metric: {wanted_time: 0 for wanted_time in wanted_times} for wanted_metric in wanted_metrics} for bot in bots}
     
 
@@ -203,11 +203,12 @@ if __name__ == '__main__':
 
                             for time, values__ in values_.items():
                                 if metric in wanted_metrics and time in wanted_times:
-                                    #print(metric)
-                                    #print(time)
-                                    #print("===")
                                     wanted_results[bot][metric][time] += values__
+                    elif key in wanted_metrics:
+                        for time, value in values.items():
+                            if time in wanted_times:
+                                wanted_results[bot][key][time] += value
+
 
     with open("bot_stats.json", "w") as file:
         json.dump(wanted_results, file, sort_keys=True, indent=4)
-
