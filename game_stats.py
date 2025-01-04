@@ -129,6 +129,15 @@ if __name__ == '__main__':
 
                     matchup_stats[matchup][bot]["timeouts"]["total"] += metrics[bot]["total_number_of_timeouts"]
                     matchup_stats[matchup][bot]["timeouts"][time_per_turn] += metrics[bot]["total_number_of_timeouts"]
+                    
+                    if "total_number_of_evaluations" in metrics[bot].keys():
+                        matchup_stats[matchup][bot].setdefault("number_of_evaluations", {"total": 0})
+                        matchup_stats[matchup][bot]["number_of_evaluations"].setdefault(time_per_turn, 0)
+
+                        matchup_stats[matchup][bot]["number_of_evaluations"]["total"] += metrics[bot]["total_number_of_evaluations"]
+                        matchup_stats[matchup][bot]["number_of_evaluations"][time_per_turn] += metrics[bot]["total_number_of_evaluations"]
+
+                        
 
                     for metric, value in metrics[bot].items():
                         matchup_stats[matchup][bot][metric] += value

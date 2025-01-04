@@ -2,6 +2,13 @@
     "total_number_of_games": 1640,
     "white_minmax_stats vs black_minmax_stats": {
         "black_minmax_stats": {
+            "number_of_evaluations": {
+                "0.5": 21164927,
+                "1.0": 34126761,
+                "1.5": 18463064,
+                "2.0": 21010271,
+                "total": 94765023
+            },
             "timeouts": {
                 "0.5": 2298,
                 "1.0": 1634,
@@ -54,6 +61,13 @@
         "number_of_games": 310,
         "total_number_of_turns": 13850,
         "white_minmax_stats": {
+            "number_of_evaluations": {
+                "0.5": 21189492,
+                "1.0": 33903388,
+                "1.5": 19761327,
+                "2.0": 21034525,
+                "total": 95888732
+            },
             "timeouts": {
                 "0.5": 2291,
                 "1.0": 1645,
@@ -87,6 +101,13 @@
     },
     "white_minmax_stats vs black_pruning_stats": {
         "black_pruning_stats": {
+            "number_of_evaluations": {
+                "0.5": 6669408,
+                "1.0": 7158496,
+                "1.5": 6442415,
+                "2.0": 2186361,
+                "total": 22456680
+            },
             "timeouts": {
                 "0.5": 1031,
                 "1.0": 986,
@@ -140,6 +161,13 @@
         "number_of_games": 155,
         "total_number_of_turns": 8644,
         "white_minmax_stats": {
+            "number_of_evaluations": {
+                "0.5": 9866525,
+                "1.0": 10881385,
+                "1.5": 15760287,
+                "2.0": 5494276,
+                "total": 42002473
+            },
             "timeouts": {
                 "0.5": 1294,
                 "1.0": 1271,
@@ -224,6 +252,13 @@
         "number_of_games": 260,
         "total_number_of_turns": 8869,
         "white_minmax_stats": {
+            "number_of_evaluations": {
+                "0.5": 3031548,
+                "1.0": 10702175,
+                "1.5": 40651761,
+                "2.0": 1153887,
+                "total": 55539371
+            },
             "timeouts": {
                 "0.5": 619,
                 "1.0": 1084,
@@ -257,6 +292,13 @@
     },
     "white_pruning_stats vs black_minmax_stats": {
         "black_minmax_stats": {
+            "number_of_evaluations": {
+                "0.5": 25932003,
+                "1.0": 2387823,
+                "1.5": 5145282,
+                "2.0": 13228974,
+                "total": 46694082
+            },
             "timeouts": {
                 "0.5": 3276,
                 "1.0": 268,
@@ -309,6 +351,13 @@
         "number_of_games": 185,
         "total_number_of_turns": 10850,
         "white_pruning_stats": {
+            "number_of_evaluations": {
+                "0.5": 17179583,
+                "1.0": 1489614,
+                "1.5": 2897252,
+                "2.0": 6378464,
+                "total": 27944913
+            },
             "timeouts": {
                 "0.5": 2451,
                 "1.0": 200,
@@ -343,6 +392,11 @@
     },
     "white_pruning_stats vs black_pruning_stats": {
         "black_pruning_stats": {
+            "number_of_evaluations": {
+                "1.0": 41305263,
+                "1.5": 25739787,
+                "total": 67045050
+            },
             "timeouts": {
                 "1.0": 393,
                 "1.5": 53,
@@ -378,6 +432,11 @@
         "number_of_games": 300,
         "total_number_of_turns": 20077,
         "white_pruning_stats": {
+            "number_of_evaluations": {
+                "1.0": 41291156,
+                "1.5": 25916879,
+                "total": 67208035
+            },
             "timeouts": {
                 "1.0": 417,
                 "1.5": 35,
@@ -444,6 +503,12 @@
         "number_of_games": 155,
         "total_number_of_turns": 5370,
         "white_pruning_stats": {
+            "number_of_evaluations": {
+                "0.5": 10155287,
+                "1.0": 2198288,
+                "1.5": 3357435,
+                "total": 15711010
+            },
             "timeouts": {
                 "0.5": 1121,
                 "1.0": 45,
@@ -473,6 +538,12 @@
     },
     "white_random_stats vs black_minmax_stats": {
         "black_minmax_stats": {
+            "number_of_evaluations": {
+                "0.5": 2781023,
+                "1.0": 641891,
+                "2.0": 7496217,
+                "total": 10919131
+            },
             "timeouts": {
                 "0.5": 538,
                 "1.0": 83,
@@ -543,6 +614,11 @@
     },
     "white_random_stats vs black_pruning_stats": {
         "black_pruning_stats": {
+            "number_of_evaluations": {
+                "0.5": 18079669,
+                "1.0": 1273939,
+                "total": 19353608
+            },
             "timeouts": {
                 "0.5": 2102,
                 "1.0": 7,
