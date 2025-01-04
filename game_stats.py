@@ -173,3 +173,34 @@ if __name__ == '__main__':
     with open("game_stats.json", "w") as file:
         json.dump(matchup_stats, file, sort_keys=True, indent=4)
 
+
+    bots = ["random", "minmax", "pruning"]
+
+    for bot in bots:
+        wanted_times = ["0.5", "1.0", "1.5", "2.0"]
+        wanted_metrics = ["number_of_evaluations", "timeouts", "moves"]
+        wanted_results = {wanted_metric: {wanted_time: 0 for wanted_time in wanted_times} for wanted_metric in wanted_metrics}
+        number_of_boards_evaluated = {wanted_time: 0 for wanted_time in wanted_times}
+        number_of_timeouts = {wanted_time: 0 for wanted_time in wanted_times}
+        number_of_moves = {wanted_time: 0 for wanted_time in wanted_times}
+
+        for matchup in matchup_stats.values():
+            if isinstance(matchup, dict):
+                for key, values in matchup.items():
+                    if key.endswith(bot + "_stats"):
+                        for metric, values_ in values.items():
+                            #print(metric)
+                            #print(values_)
+                            #print("=================")
+
+                            for time, values__ in values_.items():
+                                if metric in wanted_metrics and time in wanted_times:
+                                    #print(metric)
+                                    #print(time)
+                                    #print("===")
+                                    wanted_results[metric][time] += values__
+
+        print(bot)
+        print(wanted_results)
+        print()
+
