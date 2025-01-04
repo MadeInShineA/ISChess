@@ -186,9 +186,9 @@ if __name__ == '__main__':
 
 
     bots = ["random", "minmax", "pruning"]
-    wanted_times = ["0.5", "1.0", "1.5", "2.0"]
+    wanted_values = ["0.5", "1.0", "1.5", "2.0", "total"]
     wanted_metrics = ["number_of_evaluations", "timeouts", "turns_played", "number_of_games" ]
-    wanted_results = {bot: {wanted_metric: {wanted_time: 0 for wanted_time in wanted_times} for wanted_metric in wanted_metrics} for bot in bots}
+    wanted_results = {bot: {wanted_metric: {wanted_time: 0 for wanted_time in wanted_values} for wanted_metric in wanted_metrics} for bot in bots}
     
 
     for bot in bots:
@@ -202,11 +202,11 @@ if __name__ == '__main__':
                             #print("=================")
 
                             for time, values__ in values_.items():
-                                if metric in wanted_metrics and time in wanted_times:
+                                if metric in wanted_metrics and time in wanted_values:
                                     wanted_results[bot][metric][time] += values__
                     elif key in wanted_metrics:
                         for time, value in values.items():
-                            if time in wanted_times:
+                            if time in wanted_values:
                                 wanted_results[bot][key][time] += value
 
 
