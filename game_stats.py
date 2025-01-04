@@ -73,60 +73,60 @@ if __name__ == '__main__':
                 metrics = analyse_file(path)
                 
                 white_bot, black_bot = list(metrics.keys())[0:2]
-                matchup = f"{white_bot} vs {black_bot}"
+                matchup_stat = f"{white_bot} vs {black_bot}"
 
                 matchup_stats.setdefault("total_number_of_games", 0)
                 matchup_stats["total_number_of_games"] += 1
 
-                matchup_stats.setdefault(matchup, {})
-                matchup_stats[matchup].setdefault(white_bot + "_wins", {})
-                matchup_stats[matchup].setdefault(black_bot + "_wins", {})
-                matchup_stats[matchup].setdefault("draws", {})
-                matchup_stats[matchup].setdefault("number_of_turns", {"total": 0})
-                matchup_stats[matchup].setdefault("number_of_games", {"total": 0})
+                matchup_stats.setdefault(matchup_stat, {})
+                matchup_stats[matchup_stat].setdefault(white_bot + "_wins", {})
+                matchup_stats[matchup_stat].setdefault(black_bot + "_wins", {})
+                matchup_stats[matchup_stat].setdefault("draws", {})
+                matchup_stats[matchup_stat].setdefault("number_of_turns", {"total": 0})
+                matchup_stats[matchup_stat].setdefault("number_of_games", {"total": 0})
 
                 game_stats = metrics["game_stats"]
                 time_per_turn = str(game_stats["time_per_turn"])
 
-                matchup_stats[matchup]["number_of_games"].setdefault(time_per_turn, 0)
-                matchup_stats[matchup]["number_of_games"][time_per_turn] += 1
-                matchup_stats[matchup]["number_of_games"]["total"] += 1
+                matchup_stats[matchup_stat]["number_of_games"].setdefault(time_per_turn, 0)
+                matchup_stats[matchup_stat]["number_of_games"][time_per_turn] += 1
+                matchup_stats[matchup_stat]["number_of_games"]["total"] += 1
 
-                matchup_stats[matchup]["number_of_turns"].setdefault(time_per_turn, 0)
-                matchup_stats[matchup]["number_of_turns"][time_per_turn] += game_stats["number_of_turns"]
-                matchup_stats[matchup]["number_of_turns"]["total"] += game_stats["number_of_turns"]
+                matchup_stats[matchup_stat]["number_of_turns"].setdefault(time_per_turn, 0)
+                matchup_stats[matchup_stat]["number_of_turns"][time_per_turn] += game_stats["number_of_turns"]
+                matchup_stats[matchup_stat]["number_of_turns"]["total"] += game_stats["number_of_turns"]
 
                 
                 winner = game_stats["winner"]
 
-                matchup_stats[matchup][white_bot + "_wins"].setdefault("total", 0)
-                matchup_stats[matchup][white_bot + "_wins"].setdefault(time_per_turn, {"checkmate": 0, "pieces": 0})
+                matchup_stats[matchup_stat][white_bot + "_wins"].setdefault("total", 0)
+                matchup_stats[matchup_stat][white_bot + "_wins"].setdefault(time_per_turn, {"checkmate": 0, "pieces": 0})
 
-                matchup_stats[matchup][black_bot + "_wins"].setdefault(time_per_turn, {"checkmate": 0, "pieces": 0})
-                matchup_stats[matchup][black_bot + "_wins"].setdefault("total", 0)
+                matchup_stats[matchup_stat][black_bot + "_wins"].setdefault(time_per_turn, {"checkmate": 0, "pieces": 0})
+                matchup_stats[matchup_stat][black_bot + "_wins"].setdefault("total", 0)
 
-                matchup_stats[matchup]["draws"].setdefault(time_per_turn, {"stalemate": 0, "pieces": 0})
-                matchup_stats[matchup]["draws"].setdefault("total", 0)
+                matchup_stats[matchup_stat]["draws"].setdefault(time_per_turn, {"stalemate": 0, "pieces": 0})
+                matchup_stats[matchup_stat]["draws"].setdefault("total", 0)
 
                 if winner == "none":
 
-                    matchup_stats[matchup]["draws"]["total"] += 1
+                    matchup_stats[matchup_stat]["draws"]["total"] += 1
                     if game_stats["stalemate"]:
-                        matchup_stats[matchup]["draws"][time_per_turn]["stalemate"] += 1
+                        matchup_stats[matchup_stat]["draws"][time_per_turn]["stalemate"] += 1
                     else:
-                        matchup_stats[matchup]["draws"][time_per_turn]["pieces"] += 1
+                        matchup_stats[matchup_stat]["draws"][time_per_turn]["pieces"] += 1
                 elif winner == white_bot:
-                    matchup_stats[matchup][white_bot + "_wins"]["total"] += 1
+                    matchup_stats[matchup_stat][white_bot + "_wins"]["total"] += 1
                     if game_stats["checkmate"]:
-                        matchup_stats[matchup][white_bot + "_wins"][time_per_turn]["checkmate"] += 1
+                        matchup_stats[matchup_stat][white_bot + "_wins"][time_per_turn]["checkmate"] += 1
                     else:
-                        matchup_stats[matchup][white_bot + "_wins"][time_per_turn]["pieces"] += 1
+                        matchup_stats[matchup_stat][white_bot + "_wins"][time_per_turn]["pieces"] += 1
                 elif winner == black_bot:
-                    matchup_stats[matchup][black_bot + "_wins"]["total"] += 1
+                    matchup_stats[matchup_stat][black_bot + "_wins"]["total"] += 1
                     if game_stats["checkmate"]:
-                        matchup_stats[matchup][black_bot + "_wins"][time_per_turn]["checkmate"] += 1
+                        matchup_stats[matchup_stat][black_bot + "_wins"][time_per_turn]["checkmate"] += 1
                     else:
-                        matchup_stats[matchup][black_bot + "_wins"][time_per_turn]["pieces"] += 1
+                        matchup_stats[matchup_stat][black_bot + "_wins"][time_per_turn]["pieces"] += 1
 
                 for bot in white_bot, black_bot:
                     
@@ -137,48 +137,48 @@ if __name__ == '__main__':
                     matchup_bot_default.pop("total_time_spent_computing", None)
                     matchup_bot_default.pop("total_number_of_branches_cut", None)
 
-                    matchup_stats[matchup].setdefault(bot, matchup_bot_default.copy())
-                    matchup_stats[matchup][bot].setdefault("timeouts", {"total": 0})
-                    matchup_stats[matchup][bot]["timeouts"].setdefault(time_per_turn, 0)
+                    matchup_stats[matchup_stat].setdefault(bot, matchup_bot_default.copy())
+                    matchup_stats[matchup_stat][bot].setdefault("timeouts", {"total": 0})
+                    matchup_stats[matchup_stat][bot]["timeouts"].setdefault(time_per_turn, 0)
 
-                    matchup_stats[matchup][bot]["timeouts"]["total"] += metrics[bot]["total_number_of_timeouts"]
-                    matchup_stats[matchup][bot]["timeouts"][time_per_turn] += metrics[bot]["total_number_of_timeouts"]
+                    matchup_stats[matchup_stat][bot]["timeouts"]["total"] += metrics[bot]["total_number_of_timeouts"]
+                    matchup_stats[matchup_stat][bot]["timeouts"][time_per_turn] += metrics[bot]["total_number_of_timeouts"]
 
-                    matchup_stats[matchup][bot].setdefault("time_spent_computing", {"total": 0})
-                    matchup_stats[matchup][bot]["time_spent_computing"].setdefault(time_per_turn, 0)
+                    matchup_stats[matchup_stat][bot].setdefault("time_spent_computing", {"total": 0})
+                    matchup_stats[matchup_stat][bot]["time_spent_computing"].setdefault(time_per_turn, 0)
 
-                    matchup_stats[matchup][bot]["time_spent_computing"]["total"] += metrics[bot]["total_time_spent_computing"]
-                    matchup_stats[matchup][bot]["time_spent_computing"][time_per_turn] += metrics[bot]["total_time_spent_computing"]
+                    matchup_stats[matchup_stat][bot]["time_spent_computing"]["total"] += metrics[bot]["total_time_spent_computing"]
+                    matchup_stats[matchup_stat][bot]["time_spent_computing"][time_per_turn] += metrics[bot]["total_time_spent_computing"]
 
-                    matchup_stats[matchup][bot].setdefault("turns_played", {"total": 0})
+                    matchup_stats[matchup_stat][bot].setdefault("turns_played", {"total": 0})
 
-                    matchup_stats[matchup][bot]["turns_played"].setdefault(time_per_turn, 0)
+                    matchup_stats[matchup_stat][bot]["turns_played"].setdefault(time_per_turn, 0)
 
                     turns_played = math.ceil(game_stats["number_of_turns"] / 2.0) if bot == white_bot else math.floor(game_stats["number_of_turns"]/ 2.0)
-                    matchup_stats[matchup][bot]["turns_played"][time_per_turn] += turns_played
-                    matchup_stats[matchup][bot]["turns_played"]["total"] += turns_played
+                    matchup_stats[matchup_stat][bot]["turns_played"][time_per_turn] += turns_played
+                    matchup_stats[matchup_stat][bot]["turns_played"]["total"] += turns_played
 
 
                     
                     if "total_number_of_evaluations" in metrics[bot].keys():
-                        matchup_stats[matchup][bot].setdefault("number_of_evaluations", {"total": 0})
-                        matchup_stats[matchup][bot]["number_of_evaluations"].setdefault(time_per_turn, 0)
+                        matchup_stats[matchup_stat][bot].setdefault("number_of_evaluations", {"total": 0})
+                        matchup_stats[matchup_stat][bot]["number_of_evaluations"].setdefault(time_per_turn, 0)
 
-                        matchup_stats[matchup][bot]["number_of_evaluations"]["total"] += metrics[bot]["total_number_of_evaluations"]
-                        matchup_stats[matchup][bot]["number_of_evaluations"][time_per_turn] += metrics[bot]["total_number_of_evaluations"]
+                        matchup_stats[matchup_stat][bot]["number_of_evaluations"]["total"] += metrics[bot]["total_number_of_evaluations"]
+                        matchup_stats[matchup_stat][bot]["number_of_evaluations"][time_per_turn] += metrics[bot]["total_number_of_evaluations"]
 
                     if "total_number_of_branches_cut" in metrics[bot].keys():
-                        matchup_stats[matchup][bot].setdefault("branches_cut", {"total": 0})
-                        matchup_stats[matchup][bot]["branches_cut"].setdefault(time_per_turn, 0)
+                        matchup_stats[matchup_stat][bot].setdefault("branches_cut", {"total": 0})
+                        matchup_stats[matchup_stat][bot]["branches_cut"].setdefault(time_per_turn, 0)
 
-                        matchup_stats[matchup][bot]["branches_cut"]["total"] += metrics[bot]["total_number_of_branches_cut"]
-                        matchup_stats[matchup][bot]["branches_cut"][time_per_turn] += metrics[bot]["total_number_of_branches_cut"]
+                        matchup_stats[matchup_stat][bot]["branches_cut"]["total"] += metrics[bot]["total_number_of_branches_cut"]
+                        matchup_stats[matchup_stat][bot]["branches_cut"][time_per_turn] += metrics[bot]["total_number_of_branches_cut"]
 
 
                         
 
                     for metric, value in matchup_bot_default.items():
-                        matchup_stats[matchup][bot][metric] += value
+                        matchup_stats[matchup_stat][bot][metric] += value
 
 
     with open("game_stats.json", "w") as file:
@@ -187,14 +187,14 @@ if __name__ == '__main__':
 
     bots = ["random", "minmax", "pruning"]
     wanted_values = ["0.5", "1.0", "1.5", "2.0", "total"]
-    wanted_metrics = ["number_of_evaluations", "timeouts", "turns_played", "number_of_games" ]
+    wanted_metrics = ["number_of_evaluations", "timeouts", "turns_played", "number_of_games"]
     wanted_results = {bot: {wanted_metric: {wanted_time: 0 for wanted_time in wanted_values} for wanted_metric in wanted_metrics} for bot in bots}
     
 
     for bot in bots:
-        for matchup in matchup_stats.values():
-            if isinstance(matchup, dict):
-                for key, values in matchup.items():
+        for matchup_name, matchup_stat in matchup_stats.items():
+            if isinstance(matchup_stat, dict):
+                for key, values in matchup_stat.items():
                     if key.endswith(bot + "_stats"):
                         for metric, values_ in values.items():
                             #print(metric)
@@ -204,8 +204,11 @@ if __name__ == '__main__':
                             for time, values__ in values_.items():
                                 if metric in wanted_metrics and time in wanted_values:
                                     wanted_results[bot][metric][time] += values__
-                    elif key in wanted_metrics:
+                    if key in wanted_metrics and bot in matchup_name:
                         for time, value in values.items():
+                            print(time)
+                            print(value)
+                            print("=")
                             if time in wanted_values:
                                 wanted_results[bot][key][time] += value
 
