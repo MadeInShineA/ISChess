@@ -122,12 +122,12 @@ class MinMax(Scene):
         odd_depth_nodes_colors = {node: "BLACK" for node in graph_dict.keys() if int(node[-1]) % 2 != 0}
 
         vertices_colors = even_depth_nodes_colors | odd_depth_nodes_colors
-        vertices_labels = {node: node[0] if node[0] != "-" else node[0:2] for node in graph_dict.keys()}
+        vertices_values = {node: int(node.split("_")[0]) for node in graph_dict.keys()}
 
         vertex_config = {
             vertex: {
                 "fill_color": vertices_colors[vertex],
-                "label": vertices_labels[vertex],
+                "value": vertices_values[vertex],
                 "label_color": "WHITE" if vertices_colors[vertex] == "BLACK" else "BLACK"
             } for vertex in vertices
         }
@@ -155,7 +155,7 @@ class MinMax(Scene):
         def change_label_to_value(vertice):
             old_label = labels[vertice]
 
-            new_label = Text(vertex_config[vertice]["label"], color=vertex_config[vertice]["label_color"])
+            new_label = Text(str(vertex_config[vertice]["value"]), color=vertex_config[vertice]["label_color"])
             new_label.move_to(manim_graph[vertice].get_center())
             labels[vertice] = new_label
             self.play(Transform(old_label, new_label))
@@ -180,4 +180,106 @@ class MinMax(Scene):
                 change_label_to_value(parent)
  
         change_label_to_value("2_depth_0")
+        self.wait()
+
+class AlphaBetaPruning(Scene):
+    def construct(self):
+
+        self.camera.background_color = GRAY_A
+
+        graph_dict = {
+            "2_depth_0": ["2_depth_1", "-4_depth_1"],
+            "2_depth_1": ["4_depth_2", "2_depth_2"],
+            "-4_depth_1": ["-4_depth_2", "-2_depth_2"],
+            "4_depth_2": [],
+            "2_depth_2": [],
+            "-2_depth_2": [],
+            "-4_depth_2": []
+        }
+
+        vertices = list(graph_dict.keys())
+        edges = [(parent, child) for parent, children in graph_dict.items() for child in children]
+
+        even_depth_nodes_colors = {node: "WHITE" for node in graph_dict.keys() if int(node[-1]) % 2 == 0}
+        odd_depth_nodes_colors = {node: "BLACK" for node in graph_dict.keys() if int(node[-1]) % 2 != 0}
+
+        vertices_colors = even_depth_nodes_colors | odd_depth_nodes_colors
+        vertices_labels = {node: int(node.split("_")[0]) for node in graph_dict.keys()}
+
+        vertex_config = {
+            vertex: {
+                "fill_color": vertices_colors[vertex],
+                "value": vertices_labels[vertex],
+                "label_color": "WHITE" if vertices_colors[vertex] == "BLACK" else "BLACK"
+            } for vertex in vertices
+        }
+        labels = {v: Text("?", color="BLACK" if int(v[-1]) % 2 == 0 else "WHITE") for v in vertices}
+
+        manim_graph = DiGraph(
+            vertices,
+            edges=edges[::-1],
+            layout="tree",
+            root_vertex="2_depth_0",
+            vertex_config={
+                v: {"fill_color": vertex_config[v]["fill_color"]}
+                for v in vertex_config
+            },
+            labels=labels
+        )
+
+
+        def alpha_beta(vertex, depth, alpha, beta, maximizing_player):
+            """
+            Alpha-beta pruning logic with animation.
+            """
+            self.play(Create(manim_graph.vertices[vertex][0]))
+            label = labels[vertex]
+            if not graph_dict[vertex]:  # Leaf node
+                value = vertex_config[vertex]["value"]
+                new_label = Text(str(value), color=vertex_config[vertex]["label_color"])
+                new_label.move_to(manim_graph[vertex].get_center())
+                self.play(Transform(label, new_label))
+                return value
+
+            if maximizing_player:
+                max_eval = float("-inf")
+                for child in graph_dict[vertex]:
+                    self.play(Create(manim_graph.edges[(vertex, child)][0]))
+                    self.wait(0.2)
+
+                    eval = alpha_beta(child, depth + 1, alpha, beta, False)
+                    max_eval = max(max_eval, eval)
+                    alpha = max(alpha, eval)
+
+                    if beta <= alpha:
+                        # Prune the remaining children
+                        break
+
+                # Update the label with the max value
+                new_label = Text(str(max_eval), color=vertex_config[vertex]["label_color"])
+                new_label.move_to(manim_graph[vertex].get_center())
+                self.play(Transform(label, new_label))
+                return max_eval
+            else:
+                min_eval = float("inf")
+                for child in graph_dict[vertex]:
+                    self.play(Create(manim_graph.edges[(vertex, child)][0]))
+                    self.wait(0.2)
+
+                    eval = alpha_beta(child, depth + 1, alpha, beta, True)
+                    min_eval = min(min_eval, eval)
+                    beta = min(beta, eval)
+
+                    if beta <= alpha:
+                        # Prune the remaining children
+                        break
+
+                # Update the label with the min value
+                new_label = Text(str(min_eval), color=vertex_config[vertex]["label_color"])
+                new_label.move_to(manim_graph[vertex].get_center())
+                self.play(Transform(label, new_label))
+                return min_eval
+
+        # Start the alpha-beta pruning
+        alpha_beta("2_depth_0", 0, float("-inf"), float("inf"), True)
         self.wait()
