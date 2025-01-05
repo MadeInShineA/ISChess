@@ -100,29 +100,33 @@ if __name__ == '__main__':
                 winner = game_stats["winner"]
 
                 matchup_stats[matchup_stat][white_bot + "_wins"].setdefault("total", 0)
-                matchup_stats[matchup_stat][white_bot + "_wins"].setdefault(time_per_turn, {"checkmate": 0, "pieces": 0})
+                matchup_stats[matchup_stat][white_bot + "_wins"].setdefault(time_per_turn, {"checkmate": 0, "pieces": 0, "total": 0})
 
-                matchup_stats[matchup_stat][black_bot + "_wins"].setdefault(time_per_turn, {"checkmate": 0, "pieces": 0})
+                matchup_stats[matchup_stat][black_bot + "_wins"].setdefault(time_per_turn, {"checkmate": 0, "pieces": 0, "total": 0})
                 matchup_stats[matchup_stat][black_bot + "_wins"].setdefault("total", 0)
 
-                matchup_stats[matchup_stat]["draws"].setdefault(time_per_turn, {"stalemate": 0, "pieces": 0})
+                matchup_stats[matchup_stat]["draws"].setdefault(time_per_turn, {"stalemate": 0, "pieces": 0, "total": 0})
                 matchup_stats[matchup_stat]["draws"].setdefault("total", 0)
 
                 if winner == "none":
 
                     matchup_stats[matchup_stat]["draws"]["total"] += 1
+                    matchup_stats[matchup_stat]["draws"][time_per_turn]["total"] += 1
+
                     if game_stats["stalemate"]:
                         matchup_stats[matchup_stat]["draws"][time_per_turn]["stalemate"] += 1
                     else:
                         matchup_stats[matchup_stat]["draws"][time_per_turn]["pieces"] += 1
                 elif winner == white_bot:
                     matchup_stats[matchup_stat][white_bot + "_wins"]["total"] += 1
+                    matchup_stats[matchup_stat][white_bot + "_wins"][time_per_turn]["total"] += 1
                     if game_stats["checkmate"]:
                         matchup_stats[matchup_stat][white_bot + "_wins"][time_per_turn]["checkmate"] += 1
                     else:
                         matchup_stats[matchup_stat][white_bot + "_wins"][time_per_turn]["pieces"] += 1
                 elif winner == black_bot:
                     matchup_stats[matchup_stat][black_bot + "_wins"]["total"] += 1
+                    matchup_stats[matchup_stat][black_bot + "_wins"][time_per_turn]["total"] += 1
                     if game_stats["checkmate"]:
                         matchup_stats[matchup_stat][black_bot + "_wins"][time_per_turn]["checkmate"] += 1
                     else:

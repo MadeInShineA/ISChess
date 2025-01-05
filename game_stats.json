@@ -34,38 +34,46 @@
         "black_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 1,
-                "pieces": 17
+                "pieces": 17,
+                "total": 18
             },
             "1.0": {
                 "checkmate": 4,
-                "pieces": 75
+                "pieces": 75,
+                "total": 79
             },
             "1.5": {
                 "checkmate": 3,
-                "pieces": 9
+                "pieces": 9,
+                "total": 12
             },
             "2.0": {
                 "checkmate": 6,
-                "pieces": 20
+                "pieces": 20,
+                "total": 26
             },
             "total": 135
         },
         "draws": {
             "0.5": {
                 "pieces": 32,
-                "stalemate": 45
+                "stalemate": 45,
+                "total": 77
             },
             "1.0": {
                 "pieces": 41,
-                "stalemate": 2
+                "stalemate": 2,
+                "total": 43
             },
             "1.5": {
                 "pieces": 18,
-                "stalemate": 2
+                "stalemate": 2,
+                "total": 20
             },
             "2.0": {
                 "pieces": 9,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 9
             },
             "total": 149
         },
@@ -116,19 +124,23 @@
         "white_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 4,
-                "pieces": 0
+                "pieces": 0,
+                "total": 4
             },
             "1.0": {
                 "checkmate": 9,
-                "pieces": 0
+                "pieces": 0,
+                "total": 9
             },
             "1.5": {
                 "checkmate": 8,
-                "pieces": 0
+                "pieces": 0,
+                "total": 8
             },
             "2.0": {
                 "checkmate": 5,
-                "pieces": 0
+                "pieces": 0,
+                "total": 5
             },
             "total": 26
         }
@@ -174,38 +186,46 @@
         "black_pruning_stats_wins": {
             "0.5": {
                 "checkmate": 9,
-                "pieces": 16
+                "pieces": 16,
+                "total": 25
             },
             "1.0": {
                 "checkmate": 3,
-                "pieces": 36
+                "pieces": 36,
+                "total": 39
             },
             "1.5": {
                 "checkmate": 12,
-                "pieces": 12
+                "pieces": 12,
+                "total": 24
             },
             "2.0": {
                 "checkmate": 4,
-                "pieces": 5
+                "pieces": 5,
+                "total": 9
             },
             "total": 97
         },
         "draws": {
             "0.5": {
                 "pieces": 14,
-                "stalemate": 1
+                "stalemate": 1,
+                "total": 15
             },
             "1.0": {
                 "pieces": 14,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 14
             },
             "1.5": {
                 "pieces": 11,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 11
             },
             "2.0": {
                 "pieces": 5,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 5
             },
             "total": 45
         },
@@ -256,19 +276,23 @@
         "white_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 1,
-                "pieces": 0
+                "pieces": 0,
+                "total": 1
             },
             "1.0": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "1.5": {
                 "checkmate": 2,
-                "pieces": 0
+                "pieces": 0,
+                "total": 2
             },
             "2.0": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "total": 3
         }
@@ -300,38 +324,46 @@
         "black_random_stats_wins": {
             "0.5": {
                 "checkmate": 2,
-                "pieces": 5
+                "pieces": 5,
+                "total": 7
             },
             "1.0": {
                 "checkmate": 2,
-                "pieces": 9
+                "pieces": 9,
+                "total": 11
             },
             "1.5": {
                 "checkmate": 1,
-                "pieces": 8
+                "pieces": 8,
+                "total": 9
             },
             "2.0": {
                 "checkmate": 0,
-                "pieces": 1
+                "pieces": 1,
+                "total": 1
             },
             "total": 28
         },
         "draws": {
             "0.5": {
                 "pieces": 8,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 8
             },
             "1.0": {
                 "pieces": 16,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 16
             },
             "1.5": {
                 "pieces": 3,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 3
             },
             "2.0": {
                 "pieces": 3,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 3
             },
             "total": 30
         },
@@ -382,19 +414,23 @@
         "white_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 1,
-                "pieces": 0
+                "pieces": 0,
+                "total": 1
             },
             "1.0": {
                 "checkmate": 8,
-                "pieces": 0
+                "pieces": 0,
+                "total": 8
             },
             "1.5": {
                 "checkmate": 157,
-                "pieces": 0
+                "pieces": 0,
+                "total": 157
             },
             "2.0": {
                 "checkmate": 1,
-                "pieces": 0
+                "pieces": 0,
+                "total": 1
             },
             "total": 167
         }
@@ -433,38 +469,46 @@
         "black_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 1,
-                "pieces": 3
+                "pieces": 3,
+                "total": 4
             },
             "1.0": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "1.5": {
                 "checkmate": 0,
-                "pieces": 3
+                "pieces": 3,
+                "total": 3
             },
             "2.0": {
                 "checkmate": 2,
-                "pieces": 3
+                "pieces": 3,
+                "total": 5
             },
             "total": 12
         },
         "draws": {
             "0.5": {
                 "pieces": 23,
-                "stalemate": 2
+                "stalemate": 2,
+                "total": 25
             },
             "1.0": {
                 "pieces": 5,
-                "stalemate": 1
+                "stalemate": 1,
+                "total": 6
             },
             "1.5": {
                 "pieces": 6,
-                "stalemate": 1
+                "stalemate": 1,
+                "total": 7
             },
             "2.0": {
                 "pieces": 17,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 17
             },
             "total": 55
         },
@@ -522,19 +566,23 @@
         "white_pruning_stats_wins": {
             "0.5": {
                 "checkmate": 13,
-                "pieces": 0
+                "pieces": 0,
+                "total": 13
             },
             "1.0": {
                 "checkmate": 2,
-                "pieces": 0
+                "pieces": 0,
+                "total": 2
             },
             "1.5": {
                 "checkmate": 2,
-                "pieces": 0
+                "pieces": 0,
+                "total": 2
             },
             "2.0": {
                 "checkmate": 10,
-                "pieces": 0
+                "pieces": 0,
+                "total": 10
             },
             "total": 27
         }
@@ -570,22 +618,26 @@
         "black_pruning_stats_wins": {
             "1.0": {
                 "checkmate": 31,
-                "pieces": 122
+                "pieces": 122,
+                "total": 153
             },
             "1.5": {
                 "checkmate": 24,
-                "pieces": 16
+                "pieces": 16,
+                "total": 40
             },
             "total": 193
         },
         "draws": {
             "1.0": {
                 "pieces": 44,
-                "stalemate": 2
+                "stalemate": 2,
+                "total": 46
             },
             "1.5": {
                 "pieces": 1,
-                "stalemate": 7
+                "stalemate": 7,
+                "total": 8
             },
             "total": 54
         },
@@ -629,11 +681,13 @@
         "white_pruning_stats_wins": {
             "1.0": {
                 "checkmate": 26,
-                "pieces": 0
+                "pieces": 0,
+                "total": 26
             },
             "1.5": {
                 "checkmate": 27,
-                "pieces": 0
+                "pieces": 0,
+                "total": 27
             },
             "total": 53
         }
@@ -662,30 +716,36 @@
         "black_random_stats_wins": {
             "0.5": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "1.0": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "1.5": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "total": 0
         },
         "draws": {
             "0.5": {
                 "pieces": 0,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 0
             },
             "1.0": {
                 "pieces": 0,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 0
             },
             "1.5": {
                 "pieces": 0,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 0
             },
             "total": 0
         },
@@ -736,15 +796,18 @@
         "white_pruning_stats_wins": {
             "0.5": {
                 "checkmate": 62,
-                "pieces": 0
+                "pieces": 0,
+                "total": 62
             },
             "1.0": {
                 "checkmate": 35,
-                "pieces": 0
+                "pieces": 0,
+                "total": 35
             },
             "1.5": {
                 "checkmate": 41,
-                "pieces": 0
+                "pieces": 0,
+                "total": 41
             },
             "total": 138
         }
@@ -779,30 +842,36 @@
         "black_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 3,
-                "pieces": 0
+                "pieces": 0,
+                "total": 3
             },
             "1.0": {
                 "checkmate": 0,
-                "pieces": 6
+                "pieces": 6,
+                "total": 6
             },
             "2.0": {
                 "checkmate": 30,
-                "pieces": 0
+                "pieces": 0,
+                "total": 30
             },
             "total": 39
         },
         "draws": {
             "0.5": {
                 "pieces": 0,
-                "stalemate": 1
+                "stalemate": 1,
+                "total": 1
             },
             "1.0": {
                 "pieces": 3,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 3
             },
             "2.0": {
                 "pieces": 0,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 0
             },
             "total": 4
         },
@@ -841,15 +910,18 @@
         "white_random_stats_wins": {
             "0.5": {
                 "checkmate": 2,
-                "pieces": 0
+                "pieces": 0,
+                "total": 2
             },
             "1.0": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "2.0": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "total": 2
         }
@@ -885,22 +957,26 @@
         "black_pruning_stats_wins": {
             "0.5": {
                 "checkmate": 107,
-                "pieces": 38
+                "pieces": 38,
+                "total": 145
             },
             "1.0": {
                 "checkmate": 9,
-                "pieces": 37
+                "pieces": 37,
+                "total": 46
             },
             "total": 191
         },
         "draws": {
             "0.5": {
                 "pieces": 3,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 3
             },
             "1.0": {
                 "pieces": 29,
-                "stalemate": 0
+                "stalemate": 0,
+                "total": 29
             },
             "total": 32
         },
@@ -934,11 +1010,13 @@
         "white_random_stats_wins": {
             "0.5": {
                 "checkmate": 1,
-                "pieces": 0
+                "pieces": 0,
+                "total": 1
             },
             "1.0": {
                 "checkmate": 0,
-                "pieces": 0
+                "pieces": 0,
+                "total": 0
             },
             "total": 1
         }
