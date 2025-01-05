@@ -1,4 +1,5 @@
 import json
+from os import waitid_result
    
 if __name__ == "__main__":
 
@@ -26,7 +27,14 @@ if __name__ == "__main__":
                         for time, value in values.items():
                             if time in wanted_values:
                                 wanted_results[bot][key][time] += value
-
+    new_metrics = {"number_of_evaluations_per_move": "number_of_evaluations", "timeout_frequency": "timeouts"}
+    for bot in bots:
+        for new_metric, existing_metric in new_metrics.items():
+            wanted_results[bot][new_metric] = {}
+            for wanted_value in wanted_values:
+                wanted_results[bot][new_metric][wanted_value] = 0
+                wanted_results[bot][new_metric][wanted_value] += wanted_results[bot][existing_metric][wanted_value]
+                wanted_results[bot][new_metric][wanted_value] /= wanted_results[bot]["turns_played"][wanted_value]
 
     with open("bot_stats.json", "w") as file:
         json.dump(wanted_results, file, sort_keys=True, indent=4)
