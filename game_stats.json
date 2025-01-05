@@ -34,25 +34,25 @@
         "black_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 1,
-                "pieces": 17,
-                "total": 18
+                "pieces": 7,
+                "total": 8
             },
             "1.0": {
                 "checkmate": 4,
-                "pieces": 75,
-                "total": 79
+                "pieces": 38,
+                "total": 42
             },
             "1.5": {
                 "checkmate": 3,
-                "pieces": 9,
-                "total": 12
+                "pieces": 3,
+                "total": 6
             },
             "2.0": {
                 "checkmate": 6,
-                "pieces": 20,
-                "total": 26
+                "pieces": 8,
+                "total": 14
             },
-            "total": 135
+            "total": 70
         },
         "draws": {
             "0.5": {
@@ -124,25 +124,25 @@
         "white_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 4,
-                "pieces": 0,
-                "total": 4
+                "pieces": 10,
+                "total": 14
             },
             "1.0": {
                 "checkmate": 9,
-                "pieces": 0,
-                "total": 9
+                "pieces": 37,
+                "total": 46
             },
             "1.5": {
                 "checkmate": 8,
-                "pieces": 0,
-                "total": 8
+                "pieces": 6,
+                "total": 14
             },
             "2.0": {
                 "checkmate": 5,
-                "pieces": 0,
-                "total": 5
+                "pieces": 12,
+                "total": 17
             },
-            "total": 26
+            "total": 91
         }
     },
     "white_minmax_stats vs black_pruning_stats": {
@@ -281,20 +281,20 @@
             },
             "1.0": {
                 "checkmate": 0,
-                "pieces": 0,
-                "total": 0
+                "pieces": 2,
+                "total": 2
             },
             "1.5": {
                 "checkmate": 2,
-                "pieces": 0,
-                "total": 2
+                "pieces": 4,
+                "total": 6
             },
             "2.0": {
                 "checkmate": 0,
-                "pieces": 0,
-                "total": 0
+                "pieces": 4,
+                "total": 4
             },
-            "total": 3
+            "total": 13
         }
     },
     "white_minmax_stats vs black_random_stats": {
@@ -414,25 +414,25 @@
         "white_minmax_stats_wins": {
             "0.5": {
                 "checkmate": 1,
-                "pieces": 0,
-                "total": 1
+                "pieces": 4,
+                "total": 5
             },
             "1.0": {
                 "checkmate": 8,
-                "pieces": 0,
-                "total": 8
+                "pieces": 15,
+                "total": 23
             },
             "1.5": {
                 "checkmate": 157,
-                "pieces": 0,
-                "total": 157
+                "pieces": 11,
+                "total": 168
             },
             "2.0": {
                 "checkmate": 1,
-                "pieces": 0,
-                "total": 1
+                "pieces": 5,
+                "total": 6
             },
-            "total": 167
+            "total": 202
         }
     },
     "white_pruning_stats vs black_minmax_stats": {
@@ -566,25 +566,25 @@
         "white_pruning_stats_wins": {
             "0.5": {
                 "checkmate": 13,
-                "pieces": 0,
-                "total": 13
+                "pieces": 53,
+                "total": 66
             },
             "1.0": {
                 "checkmate": 2,
-                "pieces": 0,
-                "total": 2
+                "pieces": 4,
+                "total": 6
             },
             "1.5": {
                 "checkmate": 2,
-                "pieces": 0,
-                "total": 2
+                "pieces": 13,
+                "total": 15
             },
             "2.0": {
                 "checkmate": 10,
-                "pieces": 0,
-                "total": 10
+                "pieces": 21,
+                "total": 31
             },
-            "total": 27
+            "total": 118
         }
     },
     "white_pruning_stats vs black_pruning_stats": {
@@ -618,15 +618,15 @@
         "black_pruning_stats_wins": {
             "1.0": {
                 "checkmate": 31,
-                "pieces": 122,
-                "total": 153
+                "pieces": 67,
+                "total": 98
             },
             "1.5": {
                 "checkmate": 24,
-                "pieces": 16,
-                "total": 40
+                "pieces": 7,
+                "total": 31
             },
-            "total": 193
+            "total": 129
         },
         "draws": {
             "1.0": {
@@ -681,15 +681,15 @@
         "white_pruning_stats_wins": {
             "1.0": {
                 "checkmate": 26,
-                "pieces": 0,
-                "total": 26
+                "pieces": 55,
+                "total": 81
             },
             "1.5": {
                 "checkmate": 27,
-                "pieces": 0,
-                "total": 27
+                "pieces": 9,
+                "total": 36
             },
-            "total": 53
+            "total": 117
         }
     },
     "white_pruning_stats vs black_random_stats": {
@@ -796,8 +796,8 @@
         "white_pruning_stats_wins": {
             "0.5": {
                 "checkmate": 62,
-                "pieces": 0,
-                "total": 62
+                "pieces": 8,
+                "total": 70
             },
             "1.0": {
                 "checkmate": 35,
@@ -806,10 +806,10 @@
             },
             "1.5": {
                 "checkmate": 41,
-                "pieces": 0,
-                "total": 41
+                "pieces": 9,
+                "total": 50
             },
-            "total": 138
+            "total": 155
         }
     },
     "white_random_stats vs black_minmax_stats": {
@@ -910,20 +910,20 @@
         "white_random_stats_wins": {
             "0.5": {
                 "checkmate": 2,
-                "pieces": 0,
-                "total": 2
+                "pieces": 4,
+                "total": 6
             },
             "1.0": {
                 "checkmate": 0,
-                "pieces": 0,
-                "total": 0
+                "pieces": 1,
+                "total": 1
             },
             "2.0": {
                 "checkmate": 0,
                 "pieces": 0,
                 "total": 0
             },
-            "total": 2
+            "total": 7
         }
     },
     "white_random_stats vs black_pruning_stats": {
@@ -1010,15 +1010,15 @@
         "white_random_stats_wins": {
             "0.5": {
                 "checkmate": 1,
-                "pieces": 0,
-                "total": 1
+                "pieces": 1,
+                "total": 2
             },
             "1.0": {
                 "checkmate": 0,
                 "pieces": 0,
                 "total": 0
             },
-            "total": 1
+            "total": 2
         }
     }
 }

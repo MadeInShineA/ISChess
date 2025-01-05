@@ -16,7 +16,12 @@ def analyse_file(filepath: str) -> dict[str, dict[str, str | int | bool]]:
         winner = end_game_infos["winner"]
 
         if winner != "none":
-            winner = ("black_" if end_game_infos["number_of_turns"] % 2 == 0 else "white_") + winner
+            if end_game_infos["checkmate"]:
+                winner = ("black_" if end_game_infos["number_of_turns"] % 2 == 0 else "white_") + winner
+            else:
+                white_pieces = end_game_infos["white_pieces"]
+                black_pieces = end_game_infos["black_pieces"]
+                winner = ("white_" if white_pieces > black_pieces else "black_") + winner
 
         position_before_last_move = turns_infos[-1]["board_before_move"]
         position_after_last_move = turns_infos[-1]["board_after_move"]
