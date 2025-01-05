@@ -182,6 +182,7 @@ class MinMax(Scene):
         change_label_to_value("2_depth_0")
         self.wait()
 
+
 class AlphaBetaPruning(Scene):
     def construct(self):
 
@@ -227,6 +228,18 @@ class AlphaBetaPruning(Scene):
             labels=labels
         )
 
+        # Alpha and Beta display text
+        alpha_text = MathTex(r"Alpha = -\infty", font_size=48, color=BLACK).next_to(manim_graph, LEFT, buff=1)
+        beta_text = MathTex(r"Beta = \infty", font_size=48, color=BLACK).next_to(alpha_text, DOWN, buff=0.5)
+        self.play(Write(alpha_text), Write(beta_text))
+
+        def update_alpha_beta_text(alpha, beta):
+            alpha_str = r"Alpha = " + (r"-\infty" if alpha == float("-inf") else str(alpha))
+            beta_str = r"Beta = " + (r"\infty" if beta == float("inf") else str(beta))
+
+            new_alpha_text = MathTex(alpha_str, font_size=48, color=BLACK).move_to(alpha_text.get_center())
+            new_beta_text = MathTex(beta_str, font_size=48, color=BLACK).move_to(beta_text.get_center())
+            self.play(Transform(alpha_text, new_alpha_text), Transform(beta_text, new_beta_text))
 
         def alpha_beta(vertex, depth, alpha, beta, maximizing_player):
             """
@@ -250,6 +263,7 @@ class AlphaBetaPruning(Scene):
                     eval = alpha_beta(child, depth + 1, alpha, beta, False)
                     max_eval = max(max_eval, eval)
                     alpha = max(alpha, eval)
+                    update_alpha_beta_text(alpha, beta)
 
                     if beta <= alpha:
                         # Prune the remaining children
@@ -269,6 +283,7 @@ class AlphaBetaPruning(Scene):
                     eval = alpha_beta(child, depth + 1, alpha, beta, True)
                     min_eval = min(min_eval, eval)
                     beta = min(beta, eval)
+                    update_alpha_beta_text(alpha, beta)
 
                     if beta <= alpha:
                         # Prune the remaining children
@@ -283,3 +298,4 @@ class AlphaBetaPruning(Scene):
         # Start the alpha-beta pruning
         alpha_beta("2_depth_0", 0, float("-inf"), float("inf"), True)
         self.wait()
+
