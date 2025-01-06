@@ -24,7 +24,7 @@ You are more than welcome to modify these files, be careful that the final evalu
 - ChessArena.py: Actual GUI 
 
 # Libraries
-This software requires python 3.10+ together with two libraries:
+This software requires python 3.12+ together with two libraries:
 - Numpy
 - PyQt6
 
