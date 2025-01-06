@@ -113,4 +113,4 @@ def chess_bot(player_sequence: str, actual_board: list[list[str]], time_budget: 
     finally:
         return best_move.start, best_move.end
 
-register_chess_bot("Rob0 (technique la ref 🗿)", chess_bot)
+register_chess_bot("AB Rob0 (technique la ref 🗿)", chess_bot)
