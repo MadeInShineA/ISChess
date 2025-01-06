@@ -39,7 +39,6 @@ def chess_bot(player_sequence: str, actual_board: list[list[str]], time_budget: 
         """
         # Throws a custom exception it a timeout occurs
         if time.time() - start_time > time_budget:
-            print("Time out inside evaluate_minmax")
             raise TimeExceededException
 
         opponent_color: str = 'w' if player_color == 'b' else 'b'
