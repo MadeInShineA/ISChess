@@ -1,3 +1,5 @@
+from manim import *
+
 class MinMax(Scene):
     def construct(self):
         self.camera.background_color = GRAY_A

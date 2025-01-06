@@ -7,6 +7,5 @@
 /game_stats
 /media/texts/
 /media/images
-/media/videos/manim/480p15/partial_movie_files
-/media/videos/manim/1080p60/partial_movie_files
+**/partial_movie_files
 /media/Tex
