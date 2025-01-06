@@ -190,7 +190,7 @@ if __name__ == '__main__':
                         matchup_stats[matchup_stat][bot][metric] += value
 
 
-    with open("game_stats.json", "w") as file:
+    with open("stats/game_stats.json", "w") as file:
         json.dump(matchup_stats, file, sort_keys=True, indent=4)
 
 

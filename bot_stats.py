@@ -3,7 +3,7 @@ from os import waitid_result
    
 if __name__ == "__main__":
 
-    with open("game_stats.json", "r") as file:
+    with open("stats/game_stats.json", "r") as file:
 
         matchup_stats = json.load(file)
 
@@ -36,6 +36,6 @@ if __name__ == "__main__":
                 wanted_results[bot][new_metric][wanted_value] += wanted_results[bot][existing_metric][wanted_value]
                 wanted_results[bot][new_metric][wanted_value] /= wanted_results[bot]["turns_played"][wanted_value]
 
-    with open("bot_stats.json", "w") as file:
+    with open("stats/bot_stats.json", "w") as file:
         json.dump(wanted_results, file, sort_keys=True, indent=4)
 
