@@ -48,7 +48,7 @@ class Board:
         piece_mapping = {
             'rw': 'R', 'nw': 'N', 'bw': 'B', 'qw': 'Q', 'kw': 'K', 'pw': 'P',
             'rb': 'r', 'nb': 'n', 'bb': 'b', 'qb': 'q', 'kb': 'k', 'pb': 'p',
-        '': ''  # Empty squares
+            '': ''
         }
 
 
@@ -85,8 +85,7 @@ class Board:
             board_row = []
             for char in row:
                 if char.isdigit():
-                    # Empty squares
-                    board_row.extend([''] * int(char))
+                    board_row.extend(['--'] * int(char))
                 else:
                     board_row.append(piece_mapping[char])
             board.append(board_row)

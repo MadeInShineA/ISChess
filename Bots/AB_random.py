@@ -14,7 +14,6 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
 
     start_time = time.time()
 
-    is_timeout: bool = False
     possible_moves = []
 
     try:
@@ -37,4 +36,4 @@ def chess_bot(player_sequence, actual_board, time_budget, **kwargs):
             selected_move = Move((0, 0), (0, 0))
         return selected_move.start, selected_move.end
 
-register_chess_bot("random", chess_bot)
+register_chess_bot("AB_random", chess_bot)

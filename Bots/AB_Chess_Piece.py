@@ -9,7 +9,6 @@ class ChessPiece:
     piece_name: str = ''
     piece_value: int = 0
     possible_moves: list[tuple[int, int]] = []
-    board_placement_heuristic: list[list[int]] = []
 
     def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top: str) -> Generator[Move, None, None]:
         raise NotImplementedError
@@ -27,6 +26,7 @@ class ChessPiece:
     def get_current_value(self, x_position: int, y_position: int) -> int:
         return self.piece_value
 
+
 class LeapingPiece(ChessPiece):
     @override
     def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top) -> Generator[Move, None, None]:
@@ -36,6 +36,7 @@ class LeapingPiece(ChessPiece):
             y: int = y_position + move[1] * direction
             if 0 <= x < len(board.board) and 0 <= y < len(board.board[0]) and (board.board[y][x] == '' or board.board[y][x][1] != color):
                 yield Move((y_position, x_position), (y, x))
+
 
 class SlidingPiece(ChessPiece):
     @override
@@ -54,62 +55,11 @@ class SlidingPiece(ChessPiece):
                 x += move[0]
                 y += move[1] * direction
 
-# Subclasses for pieces
-class King(LeapingPiece):
-    piece_name = 'k'
-    piece_value = 20000
-
-    possible_moves = [(1, 1), (1, 0), (0, 1), (-1, 1), (1, -1), (-1, 0), (0, -1), (-1, -1)]
-    board_placement_heuristic_black_on_top = [
-        [-30, -40, -40, -50, -50, -40, -40, -30],
-        [-30, -40, -40, -50, -50, -40, -40, -30],
-        [-30, -40, -40, -50, -50, -40, -40, -30],
-        [-30, -40, -40, -50, -50, -40, -40, -30],
-        [-20, -30, -30, -40, -40, -30, -30, -20],
-        [-10, -20, -20, -20, -20, -20, -20, -10],
-        [20, 20,  0,  0,  0,  0, 20, 20],
-        [20, 30, 10,  0,  0, 10, 30, 20]
-    ]
-
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
-
-class Knight(LeapingPiece):
-    piece_name = 'n'
-    piece_value = 320
-
-    possible_moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
-    board_placement_heuristic_black_on_top = [
-        [-50, -40, -30, -30, -30, -30, -40, -50],
-        [-40, -20,  0,  0,  0,  0, -20, -40],
-        [-30,  0, 10, 15, 15, 10,  0, -30],
-        [-30,  5, 15, 20, 20, 15,  5, -30],
-        [-30,  0, 15, 20, 20, 15,  0, -30],
-        [-30,  5, 10, 15, 15, 10,  5, -30],
-        [-40, -20,  0,  5,  5,  0, -20, -40],
-        [-50, -40, -30, -30, -30, -30, -40, -50]
-    ]
-
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
 class Pawn(ChessPiece):
     piece_name = 'p'
     piece_value = 100
-
     possible_moves = [(0, 1)]
-    board_placement_heuristic_black_on_top = [
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [50, 50, 50, 50, 50, 50, 50, 50],
-        [10, 10, 20, 30, 30, 20, 10, 10],
-        [5, 5, 10, 25, 25, 10, 5, 5],
-        [0, 0, 0, 20, 20, 0, 0, 0],
-        [5, -5, -10, 0, 0, -10, -5, 5],
-        [5, 10, 10, -20, -20, 10, 10, 5],
-        [0, 0, 0, 0, 0, 0, 0, 0]
-    ]
-
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
 
     @override
     def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, color: str, color_on_top: str) -> Generator[Move, None, None]:
@@ -130,7 +80,7 @@ class Pawn(ChessPiece):
                 else:
                     yield Move((y_position, x_position), (y, x))
 
-        # Account for the possible eating moves
+        # Possible eating moves
         for move in [(1, 1), (-1, 1)]:
             x: int = x_position + move[0]
             y: int = y_position + move[1] * direction
@@ -142,59 +92,35 @@ class Pawn(ChessPiece):
                     yield Move((y_position, x_position), (y, x), promotion=True)
                 else:
                     yield Move((y_position, x_position), (y, x))
+
+
+class King(LeapingPiece):
+    piece_name = 'k'
+    piece_value = 20000
+    possible_moves = [(1, 1), (1, 0), (0, 1), (-1, 1), (1, -1), (-1, 0), (0, -1), (-1, -1)]
+
+
+class Queen(SlidingPiece):
+    piece_name = 'q'
+    piece_value = 900
+    possible_moves = [(1, 1), (1, 0), (0, 1), (-1, 1), (1, -1), (-1, 0), (0, -1), (-1, -1)]
+
+
+class Knight(LeapingPiece):
+    piece_name = 'n'
+    piece_value = 320
+    possible_moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+
+
 class Rock(SlidingPiece):
     piece_name = 'r'
     piece_value = 500
-
     possible_moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-    board_placement_heuristic_black_on_top = [
-        [0,  0,  0,  0,  0,  0,  0,  0],
-        [5, 10, 10, 10, 10, 10, 10,  5],
-        [-5, 0,  0,  0,  0,  0,  0, -5],
-        [-5, 0,  0,  0,  0,  0,  0, -5],
-        [-5, 0,  0,  0,  0,  0,  0, -5],
-        [-5, 0,  0,  0,  0,  0,  0, -5],
-        [-5, 0,  0,  0,  0,  0,  0, -5],
-        [0, 0,  0,  5,  5,  0,  0,  0]
-    ]
 
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
 class Bishop(SlidingPiece):
     piece_name = 'b'
     piece_value = 330
-
     possible_moves = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
-    board_placement_heuristic_black_on_top = [
-        [-20, -10, -10, -10, -10, -10, -10, -20],
-        [-10,  0,  0,  0,  0,  0,  0, -10],
-        [-10,  0,  5, 10, 10,  5,  0, -10],
-        [-10,  5,  5, 10, 10,  5,  5, -10],
-        [-10,  0, 10, 10, 10, 10,  0, -10],
-        [-10, 10, 10, 10, 10, 10, 10, -10],
-        [-10,  5,  0,  0,  0,  0,  5, -10],
-        [-20, -10, -10, -10, -10, -10, -10, -20]
-    ]
 
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
-class Queen(SlidingPiece):
-    piece_name = 'q'
-    piece_value = 900
-
-    possible_moves = [(1, 1), (1, 0), (0, 1), (-1, 1), (1, -1), (-1, 0), (0, -1), (-1, -1)]
-    board_placement_heuristic_black_on_top = [
-        [-20, -10, -10, -5, -5, -10, -10, -20],
-        [-10, 0,  0,  0,  0,  0,  0, -10],
-        [-10, 0,  5,  5,  5,  5,  0, -10],
-        [-5,  0,  5,  5,  5,  5,  0, -5],
-        [0,   0,  5,  5,  5,  5,  0, -5],
-        [-10, 5,  5,  5,  5,  5,  0, -10],
-        [-10, 0,  5,  0,  0,  0,  0, -10],
-        [-20, -10, -10, -5, -5, -10, -10, -20]
-    ]
-
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_black_on_top)
-    board_placement_heuristic_white_on_top = np.rot90(board_placement_heuristic_white_on_top)
 
