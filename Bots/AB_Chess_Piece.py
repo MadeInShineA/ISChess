@@ -18,7 +18,7 @@ class ChessPiece:
     piece_value: int = 0
     possible_moves: list[tuple[int, int]] = []
 
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[Move]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[Move, None, None]:
         """
 
         Args:
@@ -35,7 +35,7 @@ class ChessPiece:
         # Raises an error if it's not implemented inside child classes
         raise NotImplementedError
 
-    def get_resulting_boards(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[tuple[ChessBoard, Move]]:
+    def get_resulting_boards(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[tuple[ChessBoard, Move], None, None]:
         """
 
         Args:
@@ -71,7 +71,7 @@ class LeapingPiece(ChessPiece):
 
     """
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[Move]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[Move, None, None]:
         """
 
         This is an overwrite of the ChessPiece get_possible_moves function
@@ -95,7 +95,7 @@ class SlidingPiece(ChessPiece):
 
     """
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[Move]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[Move, None, None]:
         """
         
         This is an overwrite of the ChessPiece get_possible_moves function
@@ -125,7 +125,7 @@ class Pawn(ChessPiece):
     possible_moves = [(0, 1)]
 
     @override
-    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[Move]:
+    def get_possible_moves(self, board: ChessBoard, x_position: int, y_position: int, player_color: str, color_on_top: str) -> Generator[Move, None, None]:
 
         """
 
